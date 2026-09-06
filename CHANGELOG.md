@@ -6,7 +6,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 Versioning is described in `CONTRIBUTING.md` -- read it before assuming what a
 major number means here.
 
-⚠️ Entries dated before 2026-09-01 were **reconstructed** from tags and commit
+!! Entries dated before 2026-09-01 were **reconstructed** from tags and commit
 history when this file was created. Every entry after that is written in the
 same commit as the change it describes.
 
@@ -50,13 +50,13 @@ composer require coolms/core-module:^2.0 coolms/core-doctrine:^2.0
 `prefer-stable` keeps every other dependency of yours on its newest stable
 release, so this loosening applies to what actually needs it and nothing else.
 
-⚠️ **The adapter is part of the command, not an extra.** `coolms/core-module`
+!! **The adapter is part of the command, not an extra.** `coolms/core-module`
 requires a persistence implementation, which is a virtual package: nothing
 provides it until you choose an implementation, and Composer reports the
 virtual name, which reads like a broken package rather than a missing
 argument.
 
-⚠️ **A per-package flag is not enough here.** `composer require
+!! **A per-package flag is not enough here.** `composer require
 coolms/core-module:^2.0@alpha` admits the alpha of the package it names and
 **nothing behind it**, so the siblings this one pulls in still fail to resolve.
 Composer reports it against the sibling, not against what you asked for.
