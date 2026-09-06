@@ -31,7 +31,7 @@ final readonly class DocumentApiManifest
         /**
          * FQCN of the entity a filter-mode audience can be built from.
          *
-         * Warning: carried here because the ADMIN needs it and must not know
+         * Warning: Carried here because the admin needs it and must not know
          * it. The generation wizard offers Filter mode only when a template's
          * context schema references this type, and it decided that from a
          * constant compiled into the published admin bundle -- which put the
