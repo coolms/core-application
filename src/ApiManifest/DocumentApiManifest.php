@@ -18,6 +18,16 @@ final readonly class DocumentApiManifest
 {
     public function __construct(
         public string $spacesUrl = '',     // GET /api/v1/document/spaces
+        /**
+         * ⚠️ Carried in the manifest rather than derived by the FE from
+         * `spacesUrl`. String-concatenating `/available` onto it would couple
+         * the client to a URL shape the router owns, and would keep working
+         * until the route moved -- then fail as a 404 the FE reports as "no
+         * sites available", which is indistinguishable from the true empty
+         * answer.
+         */
+        public string $spacesAvailableUrl = '',   // GET  /api/v1/document/spaces/available
+        public string $spaceEnablementUrl = '',   // POST /api/v1/document/spaces/enablement
     ) {
     }
 }
