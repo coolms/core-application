@@ -16,7 +16,7 @@ use function sprintf;
 /**
  * Keeps the F7 rails' tables bounded: prunes DELIVERED outbox rows and
  * old idempotency-inbox rows past their retention windows. Without it both tables
- * grow forever — the relay never re-reads a published row, and a processed-inbox
+ * grow forever -- the relay never re-reads a published row, and a processed-inbox
  * row is only needed while a replay is still possible.
  *
  * Two SEPARATE windows: published outbox rows can go fairly soon (they're done),
@@ -54,7 +54,7 @@ final readonly class OutboxMaintenanceService
 
     /**
      * How many rows the next {@see prune()} would remove from each table, WITHOUT
-     * deleting anything — the read-only preview backing `coolms:outbox:prune
+     * deleting anything -- the read-only preview backing `coolms:outbox:prune
      * --dry-run` (0 per table when that table's window is disabled). Computes the
      * SAME cutoffs as {@see prune()} so the preview can never disagree with the
      * delete it previews.

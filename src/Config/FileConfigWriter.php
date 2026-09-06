@@ -18,7 +18,7 @@ use function sprintf;
 /**
  * Config data as YAML under `config/modules`.
  *
- * The half of the store that a developer can read in a diff and commit — which
+ * The half of the store that a developer can read in a diff and commit -- which
  * is the whole reason it is tried first. Config data is SHARED: an arrangement
  * saved in dev is meant to travel to the rest of the team through git, and a
  * row in a database does not.
@@ -28,8 +28,8 @@ final readonly class FileConfigWriter implements ConfigWriterInterface
     /**
      * Where a config with no existing file goes.
      *
-     * `generated` is an existing `config/modules` sibling — the Form module
-     * already writes its admin-authored forms there — so a machine-written file
+     * `generated` is an existing `config/modules` sibling -- the Form module
+     * already writes its admin-authored forms there -- so a machine-written file
      * is visibly separate from the hand-written ones without inventing a
      * convention. A config that already HAS a file is rewritten in place, so
      * this only ever applies to something brand new.
@@ -47,7 +47,7 @@ final readonly class FileConfigWriter implements ConfigWriterInterface
      * Can this deployment write this config as a file?
      *
      * An existing file must itself be writable; a new one needs a writable
-     * directory — and since the directory may not exist yet, the nearest
+     * directory -- and since the directory may not exist yet, the nearest
      * ancestor that DOES is the one that decides, because that is the one
      * `mkdir` would have to create into.
      */
@@ -86,8 +86,8 @@ final readonly class FileConfigWriter implements ConfigWriterInterface
         }
 
         // `type` and `id` are stamped rather than trusted from $data. They are
-        // how the loader finds this file again, so a caller that forgot them —
-        // or, worse, passed a different id — would write a file that loads as
+        // how the loader finds this file again, so a caller that forgot them --
+        // or, worse, passed a different id -- would write a file that loads as
         // something else or not at all.
         $full = ['type' => $type, 'id' => $id] + $data;
 
@@ -105,7 +105,7 @@ final readonly class FileConfigWriter implements ConfigWriterInterface
         return null !== $path && is_writable($path) && unlink($path);
     }
 
-    /** `config/modules/generated/{type}/{id}.yaml` — where the loader's glob will find it. */
+    /** `config/modules/generated/{type}/{id}.yaml` -- where the loader's glob will find it. */
     private function newPath(string $type, string $id): string
     {
         return $this->configDir . '/modules/' . self::GENERATED_MODULE . '/' . $type . '/' . $id . '.yaml';

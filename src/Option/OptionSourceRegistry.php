@@ -16,7 +16,7 @@ use RuntimeException;
  *
  * Constructed with a tagged-iterator so any module can drop a new
  * source without touching this class. Duplicate keys throw at the
- * first lookup attempt against the affected key (lazy validation —
+ * first lookup attempt against the affected key (lazy validation --
  * we don't materialise the index until needed, which keeps the
  * container build fast for the common case where no caller asks for
  * options during boot).
@@ -37,10 +37,10 @@ final class OptionSourceRegistry
     /**
      * @param bool $publicOnly when true, a source that does NOT implement
      *                         {@see PublicOptionSourceInterface} is treated
-     *                         as if it were not registered at all — the
+     *                         as if it were not registered at all -- the
      *                         public endpoint must never confirm a private
      *                         source exists, so this throws the same
-     *                         "unknown source" exception (→ 404, not 403)
+     *                         "unknown source" exception (-> 404, not 403)
      *
      * @throws UnknownOptionSourceException when no provider claims `$key`,
      *                                      or (with `$publicOnly`) the
@@ -56,7 +56,7 @@ final class OptionSourceRegistry
         }
         $rows = $provider->provide($query, $limit);
 
-        // Defensive clip — providers SHOULD honour the limit themselves
+        // Defensive clip -- providers SHOULD honour the limit themselves
         // for efficiency, but the registry enforces it as a backstop so
         // a misbehaving source can't blow up the response.
         if (null !== $limit && $limit > 0 && count($rows) > $limit) {
@@ -73,7 +73,7 @@ final class OptionSourceRegistry
 
     /**
      * Whether the source under `$key` opts into anonymous exposure
-     * ({@see PublicOptionSourceInterface}) — i.e. it is reachable at the
+     * ({@see PublicOptionSourceInterface}) -- i.e. it is reachable at the
      * firewall-public `GET /api/v1/public-options/{key}`. False for an
      * unknown key or an admin-only source. Lets callers (e.g. the Form
      * render builder) pick the public route for a public source so a

@@ -15,7 +15,7 @@ use RuntimeException;
 /**
  * Where a config write lands, and what happens to the copy it did not.
  *
- * The interesting tests here are not "it picks the file" — they are the two
+ * The interesting tests here are not "it picks the file" -- they are the two
  * about leftovers. Two stores mean two chances to leave one behind, the reader
  * lets the database win, and neither half of that failure says anything: the
  * file on disk is right, the screen is wrong, and a `git diff` shows no reason.
@@ -37,7 +37,7 @@ final class ChainedConfigWriterTest extends TestCase
     }
 
     /**
-     * The read-only deployment. Nothing about the caller changes — which is the
+     * The read-only deployment. Nothing about the caller changes -- which is the
      * entire point of the seam.
      */
     #[Test]
@@ -53,9 +53,9 @@ final class ChainedConfigWriterTest extends TestCase
     }
 
     /**
-     * ⚠️ THE test. A row written while `config/` was read-only outranks the file
+     * !! THE test. A row written while `config/` was read-only outranks the file
      * written after it, so a host that becomes writable again would keep serving
-     * the stale row — a dashboard no file on disk explains.
+     * the stale row -- a dashboard no file on disk explains.
      */
     #[Test]
     public function writingToOneStoreClearsTheConfigFromEveryOther(): void
@@ -66,7 +66,7 @@ final class ChainedConfigWriterTest extends TestCase
         new ChainedConfigWriter([$file, $db])->write('dashboard', 'main', []);
 
         self::assertSame(['dashboard/main'], $db->deleted);
-        // Not from the one that took the write, obviously — that would delete
+        // Not from the one that took the write, obviously -- that would delete
         // what was just saved.
         self::assertSame([], $file->deleted);
     }
@@ -87,7 +87,7 @@ final class ChainedConfigWriterTest extends TestCase
     /**
      * The short-circuit guard. `$store->delete(...) || $removed` calls every
      * store; `$removed || $store->delete(...)` stops at the first success and
-     * leaves the rest — a one-character bug that passes any test asserting only
+     * leaves the rest -- a one-character bug that passes any test asserting only
      * on the return value.
      */
     #[Test]
@@ -123,7 +123,7 @@ final class ChainedConfigWriterTest extends TestCase
     }
 
     /**
-     * ⚠️ An unusable KEY is the CALLER's mistake and must not answer like a
+     * !! An unusable KEY is the CALLER's mistake and must not answer like a
      * host problem: a section named `../../etc/passwd` is a 422, while "every
      * store refused a perfectly good key" is a 500. Both reach the same line as
      * "nobody took it", so the difference has to be drawn deliberately.

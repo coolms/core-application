@@ -19,7 +19,7 @@ use function array_map;
  * The dashboard catalogue's three rules.
  *
  * Each one refuses something rather than passing it on, and each refusal is
- * cheaper here than the thing it prevents downstream — an ambiguous saved
+ * cheaper here than the thing it prevents downstream -- an ambiguous saved
  * layout, a card the client cannot draw, a tile that can only show a 403.
  */
 #[CoversClass(DashboardWidgetRegistry::class)]
@@ -38,7 +38,7 @@ final class DashboardWidgetRegistryTest extends TestCase
 
     /**
      * A layout is stored against the id, so two widgets sharing one would make
-     * a saved dashboard ambiguous. First wins — which keeps the answer stable
+     * a saved dashboard ambiguous. First wins -- which keeps the answer stable
      * when a module is added rather than re-ordering someone's dashboard.
      */
     #[Test]
@@ -66,7 +66,7 @@ final class DashboardWidgetRegistryTest extends TestCase
             $this->widget('good', kind: DashboardWidget::KIND_STAT),
             $this->widget('invented', kind: 'sparkline'),
             // A kind the platform INTENDS to draw but cannot yet is refused
-            // just the same — see DashboardWidget::KINDS for why that is the
+            // just the same -- see DashboardWidget::KINDS for why that is the
             // point rather than an oversight.
             $this->widget('premature', kind: DashboardWidget::KIND_CHART),
         ]]);

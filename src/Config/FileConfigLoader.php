@@ -81,7 +81,7 @@ final readonly class FileConfigLoader implements ConfigLoaderInterface
      * earlier, and it lives here rather than in the writer for one reason: two
      * copies of "which file is this config" drift, and the day they disagree an
      * admin's edit lands in a file nothing loads. Only `config/modules` is
-     * searched — a theme override is a layer on top, never the thing you edit.
+     * searched -- a theme override is a layer on top, never the thing you edit.
      */
     public function locate(string $type, string $id): ?string
     {

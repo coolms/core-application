@@ -54,15 +54,15 @@ final class FileConfigWriterTest extends TestCase
         $where = $this->writer()->write('dashboard', 'sales', ['widgets' => []]);
 
         self::assertSame($this->configDir . '/modules/generated/dashboard/sales.yaml', $where);
-        // …and the directory it needed did not exist a moment ago.
+        // ...and the directory it needed did not exist a moment ago.
         self::assertFileExists($where);
     }
 
     /**
      * The written file must be loadable BY TYPE AND ID, which is not the same
      * claim as "a file was written": the loader matches on the `type:` and `id:`
-     * keys inside it, so a caller that omitted them — or passed a different id
-     * in the payload — would produce a file nothing ever reads.
+     * keys inside it, so a caller that omitted them -- or passed a different id
+     * in the payload -- would produce a file nothing ever reads.
      */
     #[Test]
     public function whatIsWrittenIsWhatTheLoaderFinds(): void
@@ -111,11 +111,11 @@ final class FileConfigWriterTest extends TestCase
     }
 
     /**
-     * ⚠️ A config key becomes a PATH SEGMENT. Harmless while every
+     * !! A config key becomes a PATH SEGMENT. Harmless while every
      * caller passed a constant; a traversal the moment one is a route
      * parameter, which is what section dashboards made it.
      *
-     * Refused by the STORE, not by its callers — a store that depends on being
+     * Refused by the STORE, not by its callers -- a store that depends on being
      * called carefully is one bad call away from a hole.
      */
     #[Test]

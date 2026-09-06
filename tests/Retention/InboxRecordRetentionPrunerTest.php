@@ -13,7 +13,7 @@ use Symfony\Component\Clock\MockClock;
 
 /**
  * Pins the F7 inbox's entry into the unified retention seam: it prunes
- * PROCESSED idempotency rows at `now − processed_retention_days`, previews without
+ * PROCESSED idempotency rows at `now - processed_retention_days`, previews without
  * deleting, and a non-positive window disables the sweep (misconfig can't wipe the
  * dedup log while a replay is still possible).
  *
@@ -28,7 +28,7 @@ final class InboxRecordRetentionPrunerTest extends TestCase
         $inbox = $this->createMock(ProcessedMessageStoreInterface::class);
         $inbox->expects(self::once())
             ->method('deleteProcessedOlderThan')
-            ->with(new DateTimeImmutable('2026-05-31 12:00:00')) // now − 30 days
+            ->with(new DateTimeImmutable('2026-05-31 12:00:00')) // now - 30 days
             ->willReturn(4);
 
         $pruner = new InboxRecordRetentionPruner($inbox, $clock, 30);

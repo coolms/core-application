@@ -13,7 +13,7 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Clock\MockClock;
 
 /**
- * The F7 retention service: prunes each table at `now − retentionDays`, and a
+ * The F7 retention service: prunes each table at `now - retentionDays`, and a
  * non-positive window disables that table's prune (so a misconfig can't wipe
  * live data).
  */
@@ -29,7 +29,7 @@ final class OutboxMaintenanceServiceTest extends TestCase
         $result = new OutboxMaintenanceService($outbox, $inbox, $clock, 7, 30)->prune();
 
         self::assertSame(['outbox' => 5, 'inbox' => 3], $result);
-        // now − 7 days / now − 30 days, time-of-day preserved.
+        // now - 7 days / now - 30 days, time-of-day preserved.
         self::assertEquals(new DateTimeImmutable('2026-06-23 12:00:00'), $outbox->cutoff);
         self::assertEquals(new DateTimeImmutable('2026-05-31 12:00:00'), $inbox->cutoff);
     }
@@ -57,10 +57,10 @@ final class OutboxMaintenanceServiceTest extends TestCase
         $prunable = new OutboxMaintenanceService($outbox, $inbox, $clock, 7, 30)->countPrunable();
 
         self::assertSame(['outbox' => 5, 'inbox' => 3], $prunable);
-        // countPrunable() previews at the SAME cutoffs prune() would delete at…
+        // countPrunable() previews at the SAME cutoffs prune() would delete at...
         self::assertEquals(new DateTimeImmutable('2026-06-23 12:00:00'), $outbox->countCutoff);
         self::assertEquals(new DateTimeImmutable('2026-05-31 12:00:00'), $inbox->countCutoff);
-        // …and must never delete anything.
+        // ...and must never delete anything.
         self::assertNull($outbox->cutoff, 'countPrunable must not call deletePublishedOlderThan');
         self::assertNull($inbox->cutoff, 'countPrunable must not call deleteProcessedOlderThan');
     }
@@ -140,7 +140,7 @@ final class OutboxMaintenanceServiceTest extends TestCase
 
             public function firstSeenRef(string $consumer, string $messageId, string $ref): ?string
             {
-                return null; // Always a first claim — this fixture only exercises pruning.
+                return null; // Always a first claim -- this fixture only exercises pruning.
             }
 
             public function hasProcessed(string $consumer, string $messageId): bool

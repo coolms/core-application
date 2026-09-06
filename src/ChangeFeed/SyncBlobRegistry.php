@@ -14,7 +14,7 @@ use function count;
 
 /**
  * Fans the side-channel blob operations out over every registered
- * {@see SyncBlobContributorInterface}, so callers — the controller's blob endpoint and
+ * {@see SyncBlobContributorInterface}, so callers -- the controller's blob endpoint and
  * the edge's pull loop, both in the sync module -- never name a specific module.
  *
  * The `#[AutowireIterator]` pin is deliberate: the same tagged-iterator glob footgun
@@ -37,7 +37,7 @@ final class SyncBlobRegistry
      * The bytes for `$hash` from whichever contributor holds them, or null if none does.
      *
      * First non-null wins: a hash is content-addressed, so if two contributors somehow
-     * held the same bytes they would be the SAME bytes — the choice cannot be wrong.
+     * held the same bytes they would be the SAME bytes -- the choice cannot be wrong.
      */
     public function read(string $hash): ?string
     {
@@ -55,8 +55,8 @@ final class SyncBlobRegistry
      * Every contributor's missing hashes, capped at `$limit` IN TOTAL.
      *
      * The cap is global rather than per-contributor so one pull's blob work stays bounded
-     * no matter how many modules join. The channel is convergent — whatever is dropped
-     * here is simply refetched next pull — so a cap can delay bytes but never lose them.
+     * no matter how many modules join. The channel is convergent -- whatever is dropped
+     * here is simply refetched next pull -- so a cap can delay bytes but never lose them.
      *
      * @return list<string>
      */
@@ -80,7 +80,7 @@ final class SyncBlobRegistry
      *
      * Not first-wins: one hash can matter to several contributors (and, within VFS, to
      * several nodes), and each is responsible for its own placement. Each verifies the
-     * bytes against the hash itself and throws on mismatch — see the interface.
+     * bytes against the hash itself and throws on mismatch -- see the interface.
      */
     public function store(string $hash, string $bytes): bool
     {

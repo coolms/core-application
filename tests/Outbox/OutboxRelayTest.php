@@ -20,7 +20,7 @@ use function array_map;
 /**
  * The outbox relay: publishes each claimed message then marks it delivered; a
  * publish failure marks the row failed (attempt bumped, stays undelivered) and
- * the relay carries on with the rest — delivery is at-least-once.
+ * the relay carries on with the rest -- delivery is at-least-once.
  */
 final class OutboxRelayTest extends TestCase
 {

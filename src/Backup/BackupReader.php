@@ -51,7 +51,7 @@ final readonly class BackupReader implements BackupReaderInterface
     /**
      * Restore a table from `data/<key>/<table>.json` (idempotent upsert);
      * returns rows restored. A payload that was absent (never exported) is a
-     * no-op — a config-only bundle legitimately omits runtime tables.
+     * no-op -- a config-only bundle legitimately omits runtime tables.
      */
     public function loadTable(string $table): int
     {
@@ -62,15 +62,15 @@ final readonly class BackupReader implements BackupReaderInterface
      * Restore `$table` like {@see loadTable()}, but with every column in
      * `$deferredColumns` NULLed on insert and re-applied afterwards via a targeted
      * {@see updateRow()}. This is the safe way to restore a table with a
-     * SELF-REFERENTIAL FK (`parent_id` → the same table).
+     * SELF-REFERENTIAL FK (`parent_id` -> the same table).
      *
      * **A plain {@see loadTable()} on a self-ref table corrupts data SILENTLY.**
      * `restoreRows` is delete-by-id + insert per row, so if child B is restored
-     * before parent A, B is inserted pointing at the OLD A — and then A's delete
+     * before parent A, B is inserted pointing at the OLD A -- and then A's delete
      * fires A's FK rule against the row that just landed:
-     *  - `ON DELETE SET NULL` → **B.parent_id is quietly set to NULL** (B survives,
+     *  - `ON DELETE SET NULL` -> **B.parent_id is quietly set to NULL** (B survives,
      *    reparented to nothing);
-     *  - `ON DELETE CASCADE` → **B is quietly deleted**, and its turn has passed, so
+     *  - `ON DELETE CASCADE` -> **B is quietly deleted**, and its turn has passed, so
      *    nothing puts it back.
      * Both outcomes are a successful-looking restore that lost the hierarchy. Neither
      * throws. That is exactly the silent drift this seam exists to prevent.
@@ -79,7 +79,7 @@ final readonly class BackupReader implements BackupReaderInterface
      * `VfsBackupContributor::orderNodesParentFirst()`), but it must find a valid
      * order, and one does not always exist: two self-ref columns on one table can
      * reference each other across rows (calendar A's holiday calendar is B, B's
-     * parent is A) — a genuine cycle in the combined graph with no legal insert
+     * parent is A) -- a genuine cycle in the combined graph with no legal insert
      * order. Nulling the FK removes every edge, so insert order stops mattering at
      * all; the re-point then succeeds because all rows exist. Same shape as the
      * circular-FK dance in {@see updateRow()}, generalised.
@@ -88,8 +88,8 @@ final readonly class BackupReader implements BackupReaderInterface
      * obvious half. The other half cost a real failure while building this: a CHECK
      * can couple an FK to a column that is not one, and nulling half of such a pair
      * produces a row the table rejects outright. `coolms_calendar_items` has exactly
-     * that — `chk_item_override_shape` demands `parent_item_id` and
-     * `recurrence_instant` be null together or set together — so deferring only the
+     * that -- `chk_item_override_shape` demands `parent_item_id` and
+     * `recurrence_instant` be null together or set together -- so deferring only the
      * FK turns every recurrence override into a constraint violation. The fix is to
      * defer the whole coupled GROUP; a single `updateRow()` then restores them in one
      * statement, so the CHECK never sees a half-applied row. Before deferring a
@@ -133,9 +133,9 @@ final readonly class BackupReader implements BackupReaderInterface
     }
 
     /**
-     * Read a table's rows without restoring — for a contributor that must
+     * Read a table's rows without restoring -- for a contributor that must
      * transform them first (e.g. VFS nodes need a parent-first topological sort
-     * before insert because of the self-referential FK). Absent payload → `[]`.
+     * before insert because of the self-referential FK). Absent payload -> `[]`.
      *
      * @return list<array<int|string, mixed>>
      */
@@ -177,7 +177,7 @@ final readonly class BackupReader implements BackupReaderInterface
      * Set specific columns on ONE already-restored row (targeted UPDATE by id,
      * no delete). How a contributor closes a circular FK: restore the parent with
      * the cycle-closing column NULLed via {@see restoreRows()}, restore the rows
-     * it points at, then point it back with this — a second {@see restoreRows()}
+     * it points at, then point it back with this -- a second {@see restoreRows()}
      * can't, its delete-by-id would CASCADE-wipe the rows just inserted.
      *
      * @param array<string, mixed> $columns
@@ -192,18 +192,18 @@ final readonly class BackupReader implements BackupReaderInterface
      * snapshot (the rows deleted on the source since the target last synced).
      * Reads the snapshot's `$idColumn` set, diffs it against the
      * live ids (scoped by `$scopeEquals`), and deletes the surplus. Returns rows
-     * deleted — or, when `$dryRun`, the number that WOULD be.
+     * deleted -- or, when `$dryRun`, the number that WOULD be.
      *
-     * **SAFETY — never wipes an un-exported table.** If the bundle carries NO
+     * **SAFETY -- never wipes an un-exported table.** If the bundle carries NO
      * payload for `$table` (the contributor didn't export it, e.g. a config-only
      * bundle omitting a runtime table), this is a NO-OP. A missing payload means
-     * "unknown", not "the source has zero rows" — treating it as the latter would
+     * "unknown", not "the source has zero rows" -- treating it as the latter would
      * empty a live table. A present-but-empty payload DOES reconcile to zero (the
      * source legitimately has none).
      *
      * `$scopeEquals` scopes the live set to the SAME filter the contributor
      * exported with (e.g. `['source' => 'vfs']`), so rows the contributor never
-     * exports — module-shipped definitions, other partitions — are never touched.
+     * exports -- module-shipped definitions, other partitions -- are never touched.
      *
      * @param array<string, scalar> $scopeEquals
      */
@@ -237,7 +237,7 @@ final readonly class BackupReader implements BackupReaderInterface
 
     /**
      * Composite-key delete-reconcile for a table whose PK is MULTIPLE columns and
-     * has no single `id` — a join table like `user_groups(user_id, group_id)`. Same
+     * has no single `id` -- a join table like `user_groups(user_id, group_id)`. Same
      * contract + the same absent-payload-is-a-no-op safety guard as
      * {@see reconcileTable()}, but diffs on the ordered `$keyColumns` tuple instead
      * of one id column.
@@ -275,14 +275,14 @@ final readonly class BackupReader implements BackupReaderInterface
     }
 
     /**
-     * Delete-reconcile `$table` restricted to a WHITELIST of group keys — only live
+     * Delete-reconcile `$table` restricted to a WHITELIST of group keys -- only live
      * rows whose `$membershipColumn` is IN `$allowedGroupKeys` are candidates. The
      * grouped sibling of {@see reconcileTable()}: for a partitioned export where the
      * kept partition can't be expressed as a single-column equality (the Definition
      * ladder excludes a whole definition if ANY of its versions is module-owned), the
      * contributor computes the allowed group keys once and this reconciles each table
-     * in ONE pass — reading the snapshot payload ONCE (not once per group, which is
-     * O(groups²) in payload parsing). Same absent-payload-is-a-no-op guard as
+     * in ONE pass -- reading the snapshot payload ONCE (not once per group, which is
+     * O(groups^2) in payload parsing). Same absent-payload-is-a-no-op guard as
      * {@see reconcileTable()}; an EMPTY whitelist is a no-op (fail-safe: a mis-read
      * universe reconciles nothing, degrading to additive-only). Diffs the whitelisted
      * live ids against the snapshot's `$idColumn` set and deletes the surplus. For the
@@ -319,7 +319,7 @@ final readonly class BackupReader implements BackupReaderInterface
     }
 
     /**
-     * The DISTINCT live values of `$column` in `$table` matching `$scopeEquals` — a
+     * The DISTINCT live values of `$column` in `$table` matching `$scopeEquals` -- a
      * read-only helper for a contributor that must compute a CROSS-TABLE reconcile
      * universe before delete-reconciling. The Definition ladder uses it to find the
      * definition_ids that own a `source='contributor'` version (the module-shipped
@@ -376,7 +376,7 @@ final readonly class BackupReader implements BackupReaderInterface
     }
 
     /**
-     * A stable, order-sensitive string for a composite key — the `$keyColumns`
+     * A stable, order-sensitive string for a composite key -- the `$keyColumns`
      * values joined by a control char (US, `\x1f`) that cannot occur in a UUID.
      * Returns null if any key component is missing or non-scalar, so a malformed
      * row is skipped rather than colliding into a bogus key.

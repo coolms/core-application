@@ -13,7 +13,7 @@ namespace CoolMS\CoreModule\Config;
  * point: the same admin screen has to work in dev, where `config/modules` is a
  * git working copy, and in a deployment that ships a read-only image.
  *
- * ⚠️ Callers must not reach past this to a filesystem path. A `file_put_contents`
+ * !! Callers must not reach past this to a filesystem path. A `file_put_contents`
  * at a call site works perfectly in dev and fails in production, which is the
  * worst shape a bug can have.
  */
@@ -22,7 +22,7 @@ interface ConfigWriterInterface
     /**
      * What a `$type` or `$id` may contain.
      *
-     * ⚠️ Both become PATH SEGMENTS in the file store
+     * !! Both become PATH SEGMENTS in the file store
      * (`config/modules/generated/{type}/{id}.yaml`), so an id of `../../..` is
      * a directory traversal and an id with a slash silently writes somewhere
      * the loader will never look. Harmless while every caller passed a
@@ -46,12 +46,12 @@ interface ConfigWriterInterface
     /**
      * Save one config, replacing whatever was there.
      *
-     * @param string               $type `dashboard`, `datagrid`, … — the `type:` key
+     * @param string               $type `dashboard`, `datagrid`, ... -- the `type:` key
      * @param string               $id   the `id:` key within that type
      * @param array<string, mixed> $data the whole config array
      *
      * @return string where it landed: an absolute path, or `db://{type}/{id}`.
-     *                Worth surfacing to whoever asked for the save — "saved to
+     *                Worth surfacing to whoever asked for the save -- "saved to
      *                the database because config/ is read-only" is the answer
      *                to a question they will otherwise ask twice
      */

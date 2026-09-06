@@ -8,7 +8,7 @@ namespace CoolMS\CoreModule\Template;
  * Neutral SPI for one piece of context enrichment, plugged into a
  * {@see ContextBuilderInterface}. Consumers (Web SSR, Document
  * generation, future Email/Notification templates) own their own
- * tag namespace so contributor sets don't cross-pollute — each
+ * tag namespace so contributor sets don't cross-pollute -- each
  * builder collects only the tag it's interested in.
  *
  * Implementations:
@@ -20,7 +20,7 @@ namespace CoolMS\CoreModule\Template;
  *  - SHOULD return `[]` when there is nothing to contribute for the
  *    current base context.
  *
- * The interface itself has no DI tag — registration is the
+ * The interface itself has no DI tag -- registration is the
  * concrete builder's responsibility. Web tags this as
  * `coolms.template_context_contributor`, Document as
  * `coolms.document.context_contributor`, etc.

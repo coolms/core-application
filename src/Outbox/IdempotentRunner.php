@@ -8,13 +8,13 @@ use CoolMS\Core\Inbox\ProcessedMessageStoreInterface;
 use CoolMS\Core\Transaction\TransactionRunnerInterface;
 
 /**
- * Runs a consumer's work EXACTLY ONCE per `(consumer, messageId)` — the F7
+ * Runs a consumer's work EXACTLY ONCE per `(consumer, messageId)` -- the F7
  * consumer-idempotency helper over {@see ProcessedMessageStoreInterface},
  * the reusable seam an at-least-once consumer drops onto.
  *
  * Wraps the dedupe-record + the work in ONE transaction (a SAVEPOINT when nested
  * inside the relay's batch tx): `firstSeen` reserves the id, the work runs, and
- * they commit together — so a work failure rolls BOTH back (the message is
+ * they commit together -- so a work failure rolls BOTH back (the message is
  * retried, never marked processed-but-skipped). A replay skips the work.
  */
 final readonly class IdempotentRunner

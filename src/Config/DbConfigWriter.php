@@ -24,15 +24,15 @@ final readonly class DbConfigWriter implements ConfigWriterInterface
     }
 
     /**
-     * Always, for any key the platform considers valid — which is what makes
+     * Always, for any key the platform considers valid -- which is what makes
      * this the LAST link in the chain rather than a peer of the file store. A
      * database that is unreachable is an outage, not a reason to quietly put an
      * operator's config somewhere else.
      *
-     * ⚠️ The key check is NOT redundant with the file store's, even though a
+     * !! The key check is NOT redundant with the file store's, even though a
      * row cannot be a path traversal. If this accepted keys the file store
      * refuses, an unsafe id would simply FALL THROUGH to the database and be
-     * stored — the attack surface closed in one place and left open one link
+     * stored -- the attack surface closed in one place and left open one link
      * down the chain. Refusing in both makes the chain say "no store can hold
      * this", which is the truth.
      */

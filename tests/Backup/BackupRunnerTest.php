@@ -112,7 +112,7 @@ final class BackupRunnerTest extends TestCase
         $writeRunner = $this->runner([new FakeBackupContributor('ghost', BackupTier::Config, [], 1, $log)]);
         $writeRunner->create($this->dir, [BackupTier::Config], []);
 
-        // Restore with NO 'ghost' registered — it should be reported as skipped, not fatal.
+        // Restore with NO 'ghost' registered -- it should be reported as skipped, not fatal.
         $report = $this->runner([])->restore($this->dir, false, []);
 
         self::assertCount(1, $report);
@@ -297,7 +297,7 @@ final class FakeBackupContributor implements BackupContributorInterface
 }
 
 /**
- * Test double that ALSO reconciles deletes — records its reconcile order + dry-run
+ * Test double that ALSO reconciles deletes -- records its reconcile order + dry-run
  * flag and returns a fixed deleted count (no DB).
  */
 final class ReconcilingFakeContributor implements BackupContributorInterface, ReconcilesDeletesInterface

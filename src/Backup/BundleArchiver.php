@@ -23,8 +23,8 @@ use function substr;
 
 /**
  * Packs a backup bundle directory (`manifest.json` + `data/<key>/<table>.json` +
- * sharded blobs) into a SINGLE `.zip` and back — the on-the-wire serialization
- * for controller→edge sync: a bundle is a directory tree, but a
+ * sharded blobs) into a SINGLE `.zip` and back -- the on-the-wire serialization
+ * for controller->edge sync: a bundle is a directory tree, but a
  * pull is one HTTP body, so it must round-trip through one artifact.
  *
  * {@see extract()} is **zip-slip-safe**: every entry name is validated before

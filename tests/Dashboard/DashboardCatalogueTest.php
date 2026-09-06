@@ -71,7 +71,7 @@ final class DashboardCatalogueTest extends TestCase
     }
 
     /**
-     * ⚠️ Each dashboard reads its OWN layout, keyed by the section name. Sharing
+     * !! Each dashboard reads its OWN layout, keyed by the section name. Sharing
      * one would make arranging Content silently re-order the main dashboard.
      */
     #[Test]

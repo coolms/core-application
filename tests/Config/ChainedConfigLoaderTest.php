@@ -54,7 +54,7 @@ final class ChainedConfigLoaderTest extends TestCase
      * quietly turn a shipped file into a database row on every fresh install,
      * and nothing about the screen would look different.
      *
-     * ⚠️ The unmigrated-database case is NOT tested here any more — it moved
+     * !! The unmigrated-database case is NOT tested here any more -- it moved
      * with the catch into `ConfigOverrideRepository`, which is the only layer
      * allowed to name an ORM exception. From here that case is simply
      * "the port returned null", covered by the test above.

@@ -16,7 +16,7 @@ use PHPUnit\Framework\TestCase;
 use function ucfirst;
 
 /**
- * F3 — pins the outbound-channel registry: id-keyed resolution, unknown-id
+ * F3 -- pins the outbound-channel registry: id-keyed resolution, unknown-id
  * null, the full id list, and the duplicate-id fatal guard.
  */
 #[CoversClass(OutboundChannelRegistry::class)]
@@ -121,7 +121,7 @@ final class OutboundChannelRegistryTest extends TestCase
     public function duplicateIdIsFatalEvenWhenThatIdIsDisabled(): void
     {
         // Otherwise disabling a channel would MASK the conflict until somebody
-        // enabled it again — the worst moment to discover it.
+        // enabled it again -- the worst moment to discover it.
         $registry = new OutboundChannelRegistry(
             [$this->channel('telegram'), $this->channel('telegram')],
             ['telegram' => ['enabled' => false]],

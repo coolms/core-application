@@ -21,7 +21,7 @@ use function trim;
  *
  * A channel is a transport. Making each one inject {@see SecretStoreInterface}
  * and remember which of its keys are references would mean the safety of the
- * whole class of vendor channels depends on every author getting it right — and
+ * whole class of vendor channels depends on every author getting it right -- and
  * a channel that forgot would work perfectly against a raw token in `extras`,
  * which is exactly the failure mode this exists to prevent. Resolving once, at
  * the single point every channel funnels through, means a channel keeps reading
@@ -40,7 +40,7 @@ use function trim;
  * key). That is the right posture even though a missing plain field only
  * soft-skips: an unset plain field means "this section does not use that
  * channel", while a dangling secret name means someone configured a credential
- * that is not there — silence would look identical to success.
+ * that is not there -- silence would look identical to success.
  */
 final readonly class ChannelConfigResolver
 {
@@ -67,7 +67,7 @@ final readonly class ChannelConfigResolver
 
             $reference = $config[$field->key] ?? null;
             if (!is_string($reference) || '' === trim($reference)) {
-                // Absent is absent — the channel's own soft-skip decides what
+                // Absent is absent -- the channel's own soft-skip decides what
                 // that means. Only a NAMED-but-missing secret is an error.
                 continue;
             }

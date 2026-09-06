@@ -13,7 +13,7 @@ use Symfony\Component\Clock\MockClock;
 
 /**
  * Pins the F7 outbox's entry into the unified retention seam: it prunes
- * PUBLISHED rows at `now − published_retention_days`, previews without deleting,
+ * PUBLISHED rows at `now - published_retention_days`, previews without deleting,
  * and a non-positive window disables the sweep (misconfig can't wipe live data).
  *
  * @covers \CoolMS\CoreModule\Retention\OutboxRecordRetentionPruner
@@ -27,7 +27,7 @@ final class OutboxRecordRetentionPrunerTest extends TestCase
         $outbox = $this->createMock(OutboxRelayRepositoryInterface::class);
         $outbox->expects(self::once())
             ->method('deletePublishedOlderThan')
-            ->with(new DateTimeImmutable('2026-06-23 12:00:00')) // now − 7 days
+            ->with(new DateTimeImmutable('2026-06-23 12:00:00')) // now - 7 days
             ->willReturn(5);
 
         $pruner = new OutboxRecordRetentionPruner($outbox, $clock, 7);

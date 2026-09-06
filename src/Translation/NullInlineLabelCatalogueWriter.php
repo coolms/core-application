@@ -17,8 +17,8 @@ use CoolMS\Core\Translation\TranslationCatalogueUnavailableException;
  * translation with no catalogue available would lose the operator's input.
  * Both methods raise {@see TranslationCatalogueUnavailableException} so the
  * failure is loud and explains the fix (install `coolms/i18n`). In a
- * single-locale deployment this is unreachable through the UI — the authoring
- * panel only renders when non-default locales exist — so it guards only the
+ * single-locale deployment this is unreachable through the UI -- the authoring
+ * panel only renders when non-default locales exist -- so it guards only the
  * direct-API misconfiguration path.
  */
 final class NullInlineLabelCatalogueWriter implements InlineLabelCatalogueWriterInterface

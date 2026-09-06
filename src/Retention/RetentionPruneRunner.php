@@ -8,7 +8,7 @@ use CoolMS\Core\Retention\RetentionPrunerInterface;
 use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 
 /**
- * Runs every registered {@see RetentionPrunerInterface} in one pass — the single
+ * Runs every registered {@see RetentionPrunerInterface} in one pass -- the single
  * seam behind the `coolms:retention:prune` command AND the `retention.prune`
  * scheduled handler, so all module retention actually runs (and can be
  * cron-scheduled once, not per-module).
@@ -50,7 +50,7 @@ final readonly class RetentionPruneRunner
 
     /**
      * How many rows each registered pruner WOULD remove, without deleting
-     * anything — the dry-run preview.
+     * anything -- the dry-run preview.
      *
      * @return list<array{key: string, label: string, prunable: int}>
      */

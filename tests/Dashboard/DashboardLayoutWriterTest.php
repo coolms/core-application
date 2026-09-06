@@ -49,9 +49,9 @@ final class DashboardLayoutWriterTest extends TestCase
     }
 
     /**
-     * ⚠️ A null width must NOT be written out as a number. "Keep the module's
+     * !! A null width must NOT be written out as a number. "Keep the module's
      * width" and "make it four" are different instructions, and storing the
-     * second when the first was meant freezes the card forever — a module that
+     * second when the first was meant freezes the card forever -- a module that
      * later improves its own default is then overruled by a number nobody chose.
      */
     #[Test]
@@ -75,9 +75,9 @@ final class DashboardLayoutWriterTest extends TestCase
     }
 
     /**
-     * ⚠️ THE data-loss test. The catalogue is filtered per viewer, so an admin
+     * !! THE data-loss test. The catalogue is filtered per viewer, so an admin
      * describes only the dashboard THEY can see. A plain replace would delete a
-     * colleague's arrangement of the widgets they cannot — invisibly, since
+     * colleague's arrangement of the widgets they cannot -- invisibly, since
      * neither can see the other's cards.
      */
     #[Test]
@@ -119,7 +119,7 @@ final class DashboardLayoutWriterTest extends TestCase
     }
 
     /**
-     * A widget hidden from THIS viewer cannot be placed by them either — the
+     * A widget hidden from THIS viewer cannot be placed by them either -- the
      * catalogue is the only thing a save is allowed to talk about, which is
      * what stops a hand-crafted PUT from re-adding a card the registry refused.
      */
