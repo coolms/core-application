@@ -10,6 +10,24 @@ major number means here.
 history when this file was created. Every entry after that is written in the
 same commit as the change it describes.
 
+## Unreleased
+
+### Added
+
+**`DocumentApiManifest` carries `spacesAvailableUrl` and `spaceEnablementUrl`.**
+The Document module gained an admin surface for turning document handling on or
+off per site, and the FE needs both endpoints at boot.
+
+Appended with empty-string defaults, so nothing that constructs this DTO
+positionally breaks. The struct already documented itself as reserved for
+exactly this growth.
+
+Carried in the manifest rather than derived by the client from `spacesUrl`:
+concatenating `/available` onto that would couple the client to a URL shape the
+router owns, and would keep working until the route moved -- then fail as a 404
+the UI reports as "no sites available", which is indistinguishable from the true
+empty answer.
+
 ## 2.0.0-alpha1 - 2026-09-01
 
 **A pre-release. It carries no compatibility promise**, which is the honest
