@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreApp\Translation;
+namespace CoolMS\Core\Application\Translation;
 
 use CoolMS\Core\Translation\InlineLabelCatalogueReaderInterface;
 
 /**
  * Null-object fallback for {@see InlineLabelCatalogueReaderInterface}, bound by
- * {@see \CoolMS\CoreBundle\DependencyInjection\Compiler\TranslationCatalogueFallbackPass}
+ * {@see \CoolMS\Core\Bundle\DependencyInjection\Compiler\TranslationCatalogueFallbackPass}
  * only when the I18n module is absent (its real impl, when present, wins).
  *
  * Without a catalogue there are no authored overrides, so reading them yields

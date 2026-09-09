@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreApp\Retention;
+namespace CoolMS\Core\Application\Retention;
 
 use CoolMS\Core\Retention\RetentionPrunerInterface;
 use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;

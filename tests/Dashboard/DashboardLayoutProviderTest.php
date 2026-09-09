@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreApp\Tests\Dashboard;
+namespace CoolMS\Core\Application\Tests\Dashboard;
 
-use CoolMS\CoreApp\Config\ConfigLoaderInterface;
-use CoolMS\CoreApp\Dashboard\DashboardLayoutProvider;
+use CoolMS\Core\Application\Config\ConfigLoaderInterface;
+use CoolMS\Core\Application\Dashboard\DashboardLayoutProvider;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\TestWith;

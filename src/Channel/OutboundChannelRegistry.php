@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreApp\Channel;
+namespace CoolMS\Core\Application\Channel;
 
 use CoolMS\Core\Channel\OutboundChannelInterface;
 use CoolMS\Core\Channel\OutboundChannelRegistryInterface;
@@ -16,7 +16,7 @@ use function sprintf;
  * `channelId()` into a single lookup surface.
  *
  * The `#[AutowireIterator]` pin is deliberate (the tagged-iterator glob
- * footgun, same as {@see \CoolMS\CoreApp\Retention\RetentionPruneRunner}):
+ * footgun, same as {@see \CoolMS\Core\Application\Retention\RetentionPruneRunner}):
  * binding the collection through the Core Extension's `setArgument` would be
  * clobbered by the `App\:` services glob re-registering this class, so the tag
  * is consumed on the constructor param directly.
@@ -35,7 +35,7 @@ final class OutboundChannelRegistry implements OutboundChannelRegistryInterface
     /**
      * @param iterable<OutboundChannelInterface>   $channels      tagged `coolms.outbound_channel`
      * @param array<string, array{enabled?: bool}> $channelConfig `coolms_core.outbound_channels`,
-     *                                                            bound by {@see \CoolMS\CoreBundle\DependencyInjection\Compiler\OutboundChannelRegistryConfigPass}
+     *                                                            bound by {@see \CoolMS\Core\Bundle\DependencyInjection\Compiler\OutboundChannelRegistryConfigPass}
      *                                                            (a compiler pass, not `#[Autowire(param:)]`, so the wiring stays in
      *                                                            configuration where an operator can find it -- and so the `App\:`
      *                                                            glob cannot clobber it)

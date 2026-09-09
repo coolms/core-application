@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreApp\Outbox;
+namespace CoolMS\Core\Application\Outbox;
 
 use CoolMS\Core\Inbox\ProcessedMessageStoreInterface;
 use CoolMS\Core\Transaction\TransactionRunnerInterface;

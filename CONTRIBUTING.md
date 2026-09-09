@@ -1,4 +1,4 @@
-# Contributing to `coolms/core-app`
+# Contributing to `coolms/core-application`
 
 Thank you for taking the time. This file is the whole of the process -- if
 something here is unclear or wrong, that is a bug in this file and worth an
@@ -31,7 +31,7 @@ a planned major; it does not create one.
 
 ### The major is shared across the platform; the minor and patch are this package's own
 
-`coolms/core-app` is a **platform package** -- it builds on `coolms/core` and only
+`coolms/core-application` is a **platform package** -- it builds on `coolms/core` and only
 makes sense inside CoolMS. Every platform package shares a **major** number. The
 current generation is **v2**.
 
@@ -47,7 +47,7 @@ they version entirely on their own, majors included. If this package gains or
 loses a dependency on `coolms/core`, it changes sides.
 
 ⚠️ **So the major here is a generation marker, not a per-package break.**
-`coolms/core-app 2.0.0` does not assert that this package broke something; it
+`coolms/core-application 2.0.0` does not assert that this package broke something; it
 asserts that it belongs to the v2 generation. Before the generation existed,
 requiring one package could resolve the whole set backwards onto an older one --
 including a template engine from before output encoding existed -- and Composer

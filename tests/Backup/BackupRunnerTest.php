@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreApp\Tests\Backup;
+namespace CoolMS\Core\Application\Tests\Backup;
 
 use CoolMS\Core\Backup\BackupContributorInterface;
 use CoolMS\Core\Backup\BackupException;
@@ -11,7 +11,7 @@ use CoolMS\Core\Backup\BackupTier;
 use CoolMS\Core\Backup\BackupWriterInterface;
 use CoolMS\Core\Backup\ReconcilesDeletesInterface;
 use CoolMS\Core\Backup\TableBackupPortInterface;
-use CoolMS\CoreApp\Backup\BackupRunner;
+use CoolMS\Core\Application\Backup\BackupRunner;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Clock\MockClock;
@@ -28,7 +28,7 @@ use function ucfirst;
 use const JSON_THROW_ON_ERROR;
 
 /**
- * @covers \CoolMS\CoreApp\Backup\BackupRunner
+ * @covers \CoolMS\Core\Application\Backup\BackupRunner
  */
 final class BackupRunnerTest extends TestCase
 {

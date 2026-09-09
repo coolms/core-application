@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreApp\Retention;
+namespace CoolMS\Core\Application\Retention;
 
 use CoolMS\Core\Outbox\OutboxRelayRepositoryInterface;
 use CoolMS\Core\Retention\RetentionPrunerInterface;
@@ -16,7 +16,7 @@ use function sprintf;
 /**
  * Bounds the F7 transactional-outbox table: the relay marks a row
  * PUBLISHED after dispatch and never re-reads it, so published rows accumulate
- * forever. {@see \CoolMS\CoreApp\Outbox\OutboxMaintenanceService} already
+ * forever. {@see \CoolMS\Core\Application\Outbox\OutboxMaintenanceService} already
  * prunes them via the standalone `coolms:outbox:prune` command -- but the F7 rails
  * were absent from the platform's UNIFIED retention seam
  * ({@see RetentionPrunerInterface} -> the `coolms:retention:prune` command + the

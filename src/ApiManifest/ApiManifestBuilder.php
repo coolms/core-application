@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreApp\ApiManifest;
+namespace CoolMS\Core\Application\ApiManifest;
 
 use CoolMS\Core\Config\PlatformDefaults;
 use CoolMS\Core\Config\SupportedLocalesProvider;

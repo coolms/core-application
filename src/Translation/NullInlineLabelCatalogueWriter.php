@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreApp\Translation;
+namespace CoolMS\Core\Application\Translation;
 
 use CoolMS\Core\Identity\UserInterface;
 use CoolMS\Core\Translation\InlineLabelCatalogueWriterInterface;
@@ -10,7 +10,7 @@ use CoolMS\Core\Translation\TranslationCatalogueUnavailableException;
 
 /**
  * Null-object fallback for {@see InlineLabelCatalogueWriterInterface}, bound by
- * {@see \CoolMS\CoreBundle\DependencyInjection\Compiler\TranslationCatalogueFallbackPass}
+ * {@see \CoolMS\Core\Bundle\DependencyInjection\Compiler\TranslationCatalogueFallbackPass}
  * only when the I18n module is absent (its real impl, when present, wins).
  *
  * Unlike the reader fallback, this does NOT silently no-op: writing a

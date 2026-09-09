@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreApp\Tests\Retention;
+namespace CoolMS\Core\Application\Tests\Retention;
 
 use CoolMS\Core\Outbox\OutboxRelayRepositoryInterface;
-use CoolMS\CoreApp\Retention\OutboxRecordRetentionPruner;
+use CoolMS\Core\Application\Retention\OutboxRecordRetentionPruner;
 use DateTimeImmutable;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -16,7 +16,7 @@ use Symfony\Component\Clock\MockClock;
  * PUBLISHED rows at `now - published_retention_days`, previews without deleting,
  * and a non-positive window disables the sweep (misconfig can't wipe live data).
  *
- * @covers \CoolMS\CoreApp\Retention\OutboxRecordRetentionPruner
+ * @covers \CoolMS\Core\Application\Retention\OutboxRecordRetentionPruner
  */
 final class OutboxRecordRetentionPrunerTest extends TestCase
 {

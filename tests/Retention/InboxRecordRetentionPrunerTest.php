@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreApp\Tests\Retention;
+namespace CoolMS\Core\Application\Tests\Retention;
 
 use CoolMS\Core\Inbox\ProcessedMessageStoreInterface;
-use CoolMS\CoreApp\Retention\InboxRecordRetentionPruner;
+use CoolMS\Core\Application\Retention\InboxRecordRetentionPruner;
 use DateTimeImmutable;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -17,7 +17,7 @@ use Symfony\Component\Clock\MockClock;
  * deleting, and a non-positive window disables the sweep (misconfig can't wipe the
  * dedup log while a replay is still possible).
  *
- * @covers \CoolMS\CoreApp\Retention\InboxRecordRetentionPruner
+ * @covers \CoolMS\Core\Application\Retention\InboxRecordRetentionPruner
  */
 final class InboxRecordRetentionPrunerTest extends TestCase
 {

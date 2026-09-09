@@ -1,5 +1,5 @@
 {
-    "name": "coolms/core-app",
+    "name": "coolms/core-application",
     "description": "Platform composition for coolms/core: the application services that wire the kernel contracts to whatever implements them -- config loading, backup/restore, the API manifest, outbox dispatch, retention and label resolution",
     "type": "library",
     "license": "MIT",
@@ -42,12 +42,12 @@
     },
     "autoload": {
         "psr-4": {
-            "CoolMS\\CoreApp\\": "src/"
+            "CoolMS\\Core\\Application\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "CoolMS\\CoreApp\\Tests\\": "tests/"
+            "CoolMS\\Core\\Application\\Tests\\": "tests/"
         }
     },
     "scripts": {

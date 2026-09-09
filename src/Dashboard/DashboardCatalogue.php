@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreApp\Dashboard;
+namespace CoolMS\Core\Application\Dashboard;
 
 use CoolMS\Core\Dashboard\PlacedWidget;
 

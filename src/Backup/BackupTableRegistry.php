@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreApp\Backup;
+namespace CoolMS\Core\Application\Backup;
 
 use CoolMS\Core\Backup\BackupContributorInterface;
 use CoolMS\Core\Backup\BackupTier;
@@ -103,7 +103,7 @@ final class BackupTableRegistry implements SyncedTableSetInterface
      * **Why it can't just be {@see allTables()}:** that one is `ksort`ed into a SET for
      * `covers()`, which is the right shape for "is X synced?" and useless for "what may
      * I write first?". No FK order was exposed anywhere before this, so
-     * {@see \CoolMS\CoreApp\ChangeFeed\SyncChangeApplier} -- which replays these
+     * {@see \CoolMS\Core\Application\ChangeFeed\SyncChangeApplier} -- which replays these
      * tables WITHOUT going through any contributor -- had nothing to order by.
      *
      * Ties (a table exported by two contributors) keep the FIRST occurrence, i.e. the
@@ -174,7 +174,7 @@ final class BackupTableRegistry implements SyncedTableSetInterface
      * (the persistence adapter's change-capture listener), hydration fetches
      * by the same column (the adapter's local row source and the
      * controller's `SyncRowsController`), and the applier purges by it before re-inserting
-     * ({@see \CoolMS\CoreApp\ChangeFeed\SyncChangeApplier}). One declaration, four
+     * ({@see \CoolMS\Core\Application\ChangeFeed\SyncChangeApplier}). One declaration, four
      * readers, so the ends provably cannot disagree about what a `row_id` means.
      */
     public function ownerColumnFor(string $table): ?string

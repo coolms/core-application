@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreApp\Tests\Translation;
+namespace CoolMS\Core\Application\Tests\Translation;
 
 use CoolMS\Core\Translation\Translatable;
 use CoolMS\Core\Translation\TranslatableMisconfigurationException;
-use CoolMS\CoreApp\Translation\LabelResolver;
+use CoolMS\Core\Application\Translation\LabelResolver;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Contracts\Translation\TranslatorInterface;

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreApp\Tests\Backup;
+namespace CoolMS\Core\Application\Tests\Backup;
 
 use CoolMS\Core\Backup\BackupException;
-use CoolMS\CoreApp\Backup\BundleArchiver;
+use CoolMS\Core\Application\Backup\BundleArchiver;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
@@ -18,7 +18,7 @@ use function random_bytes;
 use function sys_get_temp_dir;
 
 /**
- * @covers \CoolMS\CoreApp\Backup\BundleArchiver
+ * @covers \CoolMS\Core\Application\Backup\BundleArchiver
  */
 final class BundleArchiverTest extends TestCase
 {

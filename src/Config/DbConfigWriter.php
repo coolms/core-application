@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreApp\Config;
+namespace CoolMS\Core\Application\Config;
 
 use CoolMS\Core\Config\ConfigOverrideRepositoryInterface;
 

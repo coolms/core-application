@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreApp\Tests\Config;
+namespace CoolMS\Core\Application\Tests\Config;
 
 use CoolMS\Core\Config\ConfigOverride;
 use CoolMS\Core\Config\ConfigOverrideRepositoryInterface;
-use CoolMS\CoreApp\Config\ChainedConfigLoader;
-use CoolMS\CoreApp\Config\FileConfigLoader;
+use CoolMS\Core\Application\Config\ChainedConfigLoader;
+use CoolMS\Core\Application\Config\FileConfigLoader;
 use LogicException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;

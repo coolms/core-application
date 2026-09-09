@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreApp\Service;
+namespace CoolMS\Core\Application\Service;
 
 use CoolMS\Core\Config\PlatformDefaults;
 use CoolMS\Core\Service\SlugGeneratorInterface;

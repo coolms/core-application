@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreApp\Tests\Backup;
+namespace CoolMS\Core\Application\Tests\Backup;
 
 use CoolMS\Core\Backup\BackupContributorInterface;
 use CoolMS\Core\Backup\DefersRestoreColumnsInterface;
-use CoolMS\CoreApp\Backup\BackupTableRegistry;
+use CoolMS\Core\Application\Backup\BackupTableRegistry;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \CoolMS\CoreApp\Backup\BackupTableRegistry
+ * @covers \CoolMS\Core\Application\Backup\BackupTableRegistry
  */
 final class BackupTableRegistryTest extends TestCase
 {

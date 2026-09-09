@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to `coolms/core-app` are recorded here.
+All notable changes to `coolms/core-application` are recorded here.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 Versioning is described in `CONTRIBUTING.md` -- read it before assuming what a
@@ -44,24 +44,24 @@ Composer will not install it under default stability. Set
 in your root `composer.json`, then:
 
 ```
-composer require coolms/core-app:^2.0 coolms/core-doctrine:^2.0
+composer require coolms/core-application:^2.0 coolms/core-doctrine:^2.0
 ```
 
 `prefer-stable` keeps every other dependency of yours on its newest stable
 release, so this loosening applies to what actually needs it and nothing else.
 
-!! **The adapter is part of the command, not an extra.** `coolms/core-app`
+!! **The adapter is part of the command, not an extra.** `coolms/core-application`
 requires a persistence implementation, which is a virtual package: nothing
 provides it until you choose an implementation, and Composer reports the
 virtual name, which reads like a broken package rather than a missing
 argument.
 
 !! **A per-package flag is not enough here.** `composer require
-coolms/core-app:^2.0@alpha` admits the alpha of the package it names and
+coolms/core-application:^2.0@alpha` admits the alpha of the package it names and
 **nothing behind it**, so the siblings this one pulls in still fail to resolve.
 Composer reports it against the sibling, not against what you asked for.
 
-A bare `composer require coolms/core-app` does not install the wrong thing
+A bare `composer require coolms/core-application` does not install the wrong thing
 quietly -- it refuses, naming `coolms/core-persistence-implementation`. That
 is a virtual package, so the message reads like a broken dependency rather
 than a missing argument.
@@ -83,18 +83,18 @@ ships -- never the other way round.
 
 ### Fixed: the installation command in the readme names the adapter
 
-`composer require coolms/core-app` on its own cannot resolve. This package
+`composer require coolms/core-application` on its own cannot resolve. This package
 requires a virtual persistence-implementation package, and only an adapter
 provides one, so Composer reports that the virtual package "could not be found
 in any version" -- which reads like a broken package rather than a missing
 argument.
 
 The readme now leads with the command that works:
-`composer require coolms/core-app coolms/core-doctrine`.
+`composer require coolms/core-application coolms/core-doctrine`.
 
 ### The v2 generation -- a version number, and nothing else
 
-This release moves `coolms/core-app` to `2.0.0` **without a single change to its
+This release moves `coolms/core-application` to `2.0.0` **without a single change to its
 code**. Nothing was added, removed, renamed or fixed.
 
 Every CoolMS platform package -- everything that requires `coolms/core` --

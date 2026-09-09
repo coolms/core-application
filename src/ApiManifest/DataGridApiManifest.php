@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreApp\ApiManifest;
+namespace CoolMS\Core\Application\ApiManifest;
 
 final readonly class DataGridApiManifest
 {

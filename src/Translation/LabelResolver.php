@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreApp\Translation;
+namespace CoolMS\Core\Application\Translation;
 
 use CoolMS\Core\Translation\LabelResolverInterface;
 use CoolMS\Core\Translation\Translatable;
