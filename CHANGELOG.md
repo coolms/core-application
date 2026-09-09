@@ -10,7 +10,7 @@ major number means here.
 history when this file was created. Every entry after that is written in the
 same commit as the change it describes.
 
-## Unreleased
+## 2.0.0-alpha2 - 2026-09-09
 
 ### Added
 
@@ -27,6 +27,34 @@ concatenating `/available` onto that would couple the client to a URL shape the
 router owns, and would keep working until the route moved -- then fail as a 404
 the UI reports as "no sites available", which is indistinguishable from the true
 empty answer.
+
+### Changed
+
+!! **This package is now `coolms/core-application`, and its namespace nests under the
+domain root.**
+
+| before | after |
+|---|---|
+| `coolms/core-module` | `coolms/core-application` |
+| `CoolMS\CoreModule\` | `CoolMS\Core\Application\` |
+
+`coolms/core-module` is abandoned and points here. Update the requirement and the
+imports together; nothing else about the classes changed -- same names, same
+contracts, same requires.
+
+The rule underneath: a suffix names a superstructure and the absence of one
+names the subject, so the domain package keeps the root prefix and every layer
+above it carries a segment equal to its suffix.
+
+- `ContextContributorInterface` moved down to `coolms/core`. The name here
+  survives as a subtype with nothing added, so an implementation of it still
+  satisfies a parameter typed against the parent.
+- The document manifest carries the filter-audience entity, so the admin can
+  compare against a value the server owns instead of a constant compiled into a
+  published bundle.
+- Comments, docblocks and changelogs are ascii and no longer carry internal
+  slice ids.
+- Development-only files are export-ignored.
 
 ## 2.0.0-alpha1 - 2026-09-01
 
