@@ -11,7 +11,7 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
- * F6 Phase 1 -- the builder threads Core-owned platform data
+ * The builder threads Core-owned platform data
  * (supported locales + platform defaults) straight into the manifest,
  * without a contributor.
  *

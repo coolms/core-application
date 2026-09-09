@@ -14,7 +14,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  * Default `LabelResolverInterface` impl.
  *
  * Two collaborators:
- *  - `TranslatorInterface` (Symfony). When that's decorated by F5.b's
+ *  - `TranslatorInterface` (Symfony). When that's decorated by the
  *    `VfsOverlayingTranslator`, the lookup transparently consults VFS
  *    XLIFF overrides before bundled `.xlf` files. We don't reach for
  *    the loader directly; the decorated translator IS the read path.

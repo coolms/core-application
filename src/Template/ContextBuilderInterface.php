@@ -12,7 +12,7 @@ namespace CoolMS\CoreModule\Template;
  * -- that builder doesn't yet implement this interface for backward
  * compatibility, but its semantics match this contract).
  *
- * Phase 1 of the cross-module context-builder refactor introduces
+ * The first step of the cross-module context-builder refactor introduces
  * this interface plus a Document-side implementation; Web's
  * builder migrates to this contract in a follow-up if/when its
  * `RenderContext` argument shape needs broadening.

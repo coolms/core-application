@@ -25,7 +25,7 @@ final readonly class ApiManifest
         /** @var array<array{code: string, label: string}> */
         public array $supportedLocales = [],
         /**
-         * F6 Phase 1 -- platform-wide default user-facing
+         * Platform-wide default user-facing
          * settings. Carries `locale` (the default locale, previously
          * absent from the manifest), `timezone`, `dateFormat`,
          * `timeFormat`, `weekStart`. The FE renders anonymous /
