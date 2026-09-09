@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreModule\Tests\Config;
+namespace CoolMS\Core\Application\Tests\Config;
 
-use CoolMS\CoreModule\Config\FileConfigLoader;
+use CoolMS\Core\Application\Config\FileConfigLoader;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 

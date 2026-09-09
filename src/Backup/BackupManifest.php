@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreModule\Backup;
+namespace CoolMS\Core\Application\Backup;
 
 use CoolMS\Core\Backup\BackupException;
 
@@ -13,7 +13,7 @@ use function is_string;
 use function sprintf;
 
 /**
- * The `manifest.json` at a bundle's root — self-describing metadata that also
+ * The `manifest.json` at a bundle's root -- self-describing metadata that also
  * gates restore. `formatVersion` is the compat contract: a bundle written by a
  * NEWER format than the running code understands is refused rather than
  * mis-imported (the seam that later carries the sync snapshot version).

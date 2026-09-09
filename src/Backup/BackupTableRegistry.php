@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreModule\Backup;
+namespace CoolMS\Core\Application\Backup;
 
 use CoolMS\Core\Backup\BackupContributorInterface;
 use CoolMS\Core\Backup\BackupTier;
@@ -22,21 +22,21 @@ use function usort;
 use const PHP_INT_MAX;
 
 /**
- * The authoritative set of DB tables the backup contributors serialise — i.e. the
+ * The authoritative set of DB tables the backup contributors serialise -- i.e. the
  * "synced universe". Aggregates every {@see BackupContributorInterface::tables()}
  * over the same tagged iterator {@see BackupRunner} runs, so the enumeration stays
  * provably in step with what backup actually exports as contributors evolve.
  *
- * Why this exists (controller→edge sync): the event-driven change-feed's
- * row-change CAPTURE scope must equal what backup EXPORTS — a table synced by backup
+ * Why this exists (controller->edge sync): the event-driven change-feed's
+ * row-change CAPTURE scope must equal what backup EXPORTS -- a table synced by backup
  * but NOT captured by the feed would silently drift on edges (the failure mode of
- * sourcing the delta from a partial log, §3). Before this registry there was no
- * central "is table X synced?" answer — each contributor privately knew its own
+ * sourcing the delta from a partial log, section 3). Before this registry there was no
+ * central "is table X synced?" answer -- each contributor privately knew its own
  * tables. The future flush-listener capture filters on {@see covers()}; a table with
  * no backup contributor (e.g. Runtime-tier `coolms_workflow_process_instances`, or
  * the feed's own `coolms_sync_changes`) is NOT synced and is skipped.
  *
- * The `#[AutowireIterator]` pin is deliberate — the same tagged-iterator glob footgun
+ * The `#[AutowireIterator]` pin is deliberate -- the same tagged-iterator glob footgun
  * {@see BackupRunner} documents (a Core-Extension `setArgument` would be clobbered by
  * the `App\:` services glob re-registering this class).
  */
@@ -57,10 +57,10 @@ final class BackupTableRegistry implements SyncedTableSetInterface
     /** @var array<string, list<string>>|null memoised deferred-column map */
     private ?array $deferred = null;
 
-    /** @var array<string, string>|null memoised owned-collection map (table → owner column) */
+    /** @var array<string, string>|null memoised owned-collection map (table -> owner column) */
     private ?array $ownerColumns = null;
 
-    /** @var array<string, BackupTier>|null memoised table → tier map */
+    /** @var array<string, BackupTier>|null memoised table -> tier map */
     private ?array $tiers = null;
 
     /**
@@ -94,17 +94,17 @@ final class BackupTableRegistry implements SyncedTableSetInterface
      * that reference them, across modules AND within each module. Write in this order;
      * DELETE in its reverse.
      *
-     * The order is composed from what the contributors already declare — the same two
-     * facts a bundle restore walks — rather than introspected from the DB:
-     *  1. `restoreAfter()` topo-sorted → cross-MODULE order (Identity before Calendar);
-     *  2. each contributor's own `tables()` order → intra-module order (calendars before
+     * The order is composed from what the contributors already declare -- the same two
+     * facts a bundle restore walks -- rather than introspected from the DB:
+     *  1. `restoreAfter()` topo-sorted -> cross-MODULE order (Identity before Calendar);
+     *  2. each contributor's own `tables()` order -> intra-module order (calendars before
      *     items), which is contractual, see {@see BackupContributorInterface::tables()}.
      *
      * **Why it can't just be {@see allTables()}:** that one is `ksort`ed into a SET for
      * `covers()`, which is the right shape for "is X synced?" and useless for "what may
      * I write first?". No FK order was exposed anywhere before this, so
-     * {@see \CoolMS\CoreModule\ChangeFeed\SyncChangeApplier} — which replays these
-     * tables WITHOUT going through any contributor — had nothing to order by.
+     * {@see \CoolMS\Core\Application\ChangeFeed\SyncChangeApplier} -- which replays these
+     * tables WITHOUT going through any contributor -- had nothing to order by.
      *
      * Ties (a table exported by two contributors) keep the FIRST occurrence, i.e. the
      * earlier contributor's position, which is the safe one.
@@ -139,7 +139,7 @@ final class BackupTableRegistry implements SyncedTableSetInterface
     }
 
     /**
-     * The columns to hold back to a second pass when restoring `$table` — the
+     * The columns to hold back to a second pass when restoring `$table` -- the
      * self-referential FK hazard no table order can fix. Empty for most tables.
      * Declared by {@see DefersRestoreColumnsInterface}; see
      * {@see BackupReader::loadTableDeferring()} for the mechanics and the
@@ -166,7 +166,7 @@ final class BackupTableRegistry implements SyncedTableSetInterface
 
     /**
      * The column naming the OWNER of `$table`'s rows, or null if `$table` is an ordinary
-     * table of independently-keyed rows (the overwhelming majority — the declaration is
+     * table of independently-keyed rows (the overwhelming majority -- the declaration is
      * opt-in via {@see SyncsAsOwnedCollectionInterface}).
      *
      * **This is THE key-column question for the change feed**, and every side must ask it
@@ -174,7 +174,7 @@ final class BackupTableRegistry implements SyncedTableSetInterface
      * (the persistence adapter's change-capture listener), hydration fetches
      * by the same column (the adapter's local row source and the
      * controller's `SyncRowsController`), and the applier purges by it before re-inserting
-     * ({@see \CoolMS\CoreModule\ChangeFeed\SyncChangeApplier}). One declaration, four
+     * ({@see \CoolMS\Core\Application\ChangeFeed\SyncChangeApplier}). One declaration, four
      * readers, so the ends provably cannot disagree about what a `row_id` means.
      */
     public function ownerColumnFor(string $table): ?string
@@ -196,7 +196,7 @@ final class BackupTableRegistry implements SyncedTableSetInterface
 
     /**
      * Sort `$tables` into {@see orderedTables()} order. Tables outside the synced
-     * universe keep their relative position at the END — the caller is writing
+     * universe keep their relative position at the END -- the caller is writing
      * something the registry knows nothing about, so we must not claim to have
      * ordered it safely.
      *
@@ -223,8 +223,8 @@ final class BackupTableRegistry implements SyncedTableSetInterface
      * The {@see BackupTier} of the contributor that exports `$table`, or null for a
      * table outside the synced universe.
      *
-     * This map is a later addition — `syncedSet()` deliberately flattens
-     * contributors away for `covers()` — and its absence is what made per-edge
+     * This map is a later addition -- `syncedSet()` deliberately flattens
+     * contributors away for `covers()` -- and its absence is what made per-edge
      * scope unenforceable at the change-feed/rows/blobs endpoints:
      * scope is expressed in TIERS (the axis `BackupRunner::select()` already
      * filters snapshots by), while those endpoints speak TABLES. This is the

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreModule\Tests\Dashboard;
+namespace CoolMS\Core\Application\Tests\Dashboard;
 
-use CoolMS\CoreModule\Config\ConfigLoaderInterface;
-use CoolMS\CoreModule\Dashboard\DashboardLayoutProvider;
+use CoolMS\Core\Application\Config\ConfigLoaderInterface;
+use CoolMS\Core\Application\Dashboard\DashboardLayoutProvider;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\TestWith;
@@ -21,7 +21,7 @@ use function str_replace;
  *
  * Every test past the first is about the same thing: this input is UNTRUSTED,
  * because a person types it. A bad line loses its own card and nothing else,
- * and says so in the log — a dashboard that 500s over one typo in a config file
+ * and says so in the log -- a dashboard that 500s over one typo in a config file
  * would be a worse answer than the typo.
  */
 #[CoversClass(DashboardLayoutProvider::class)]
@@ -50,7 +50,7 @@ final class DashboardLayoutProviderTest extends TestCase
     }
 
     /**
-     * No file is the NORMAL state, not a failure — it is what every install has
+     * No file is the NORMAL state, not a failure -- it is what every install has
      * until someone arranges something, and it must mean "the catalogue's own
      * order stands".
      */
@@ -85,8 +85,8 @@ final class DashboardLayoutProviderTest extends TestCase
         $provider->load();
         $provider->load('sales');
 
-        // ⚠️ The third element must stay null. The config loader merges a theme
-        // override with array_merge_recursive, which CONCATENATES lists — asking
+        // !! The third element must stay null. The config loader merges a theme
+        // override with array_merge_recursive, which CONCATENATES lists -- asking
         // for one would append a second copy of every placement.
         self::assertSame([['dashboard', 'main', null], ['dashboard', 'sales', null]], $loader->asked);
     }
@@ -114,7 +114,7 @@ final class DashboardLayoutProviderTest extends TestCase
         self::assertStringContainsString($expectedInLog, $logger->warnings[0]);
     }
 
-    /** A `widgets:` that is a scalar, not a list — the commonest YAML slip. */
+    /** A `widgets:` that is a scalar, not a list -- the commonest YAML slip. */
     #[Test]
     public function aWidgetsKeyThatIsNotAListMeansNoLayout(): void
     {

@@ -2,40 +2,30 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreModule\Template;
+namespace CoolMS\Core\Application\Template;
+
+use CoolMS\Core\Template\ContextContributorInterface as CoreContextContributorInterface;
 
 /**
- * Neutral SPI for one piece of context enrichment, plugged into a
- * {@see ContextBuilderInterface}. Consumers (Web SSR, Document
- * generation, future Email/Notification templates) own their own
- * tag namespace so contributor sets don't cross-pollute — each
- * builder collects only the tag it's interested in.
+ * The context-enrichment SPI, kept at this name so consumers typed against it
+ * keep working. The contract itself is
+ * {@see CoreContextContributorInterface} in `coolms/core`.
  *
- * Implementations:
- *  - MUST be idempotent and stateless across invocations.
- *  - MUST return JSON-serializable arrays (no entities/closures/
- *    resources). The builder's output is persisted on the
- *    DocumentInstance row in the Document use case, and travels
- *    through Messenger payloads in others.
- *  - SHOULD return `[]` when there is nothing to contribute for the
- *    current base context.
+ * !! IT MOVED DOWN, NOT SIDEWAYS. Three interfaces in `coolms/core` extend
+ * this contract -- `Web\TemplateContextContributorInterface`,
+ * `Document\DocumentContextContributorInterface` and
+ * `Document\DocumentRenderContextContributorInterface` -- so while it lived
+ * here, the contracts package imported a package that requires it back. That
+ * is the one dependency shape a `composer require` cannot fix: declaring it
+ * would have written the cycle down rather than removed it.
  *
- * The interface itself has no DI tag — registration is the
- * concrete builder's responsibility. Web tags this as
- * `coolms.template_context_contributor`, Document as
- * `coolms.document.context_contributor`, etc.
+ * Nothing about the contract needed this tier. It declares one method over
+ * plain arrays and names no type at all.
+ *
+ * Prefer the `CoolMS\Core\Template` name in new code. This one is a subtype
+ * with nothing added, so an implementation of either satisfies a parameter
+ * typed against the parent.
  */
-interface ContextContributorInterface
+interface ContextContributorInterface extends CoreContextContributorInterface
 {
-    /**
-     * Contribute fields to the rendering context. The builder
-     * deep-merges the return value into the accumulated context;
-     * later contributors see earlier contributors' contributions
-     * via the `$context` argument.
-     *
-     * @param array<string, mixed> $context context assembled so far
-     *
-     * @return array<string, mixed> key/value pairs to merge in
-     */
-    public function contribute(array $context): array;
 }

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreModule\Tests\Config;
+namespace CoolMS\Core\Application\Tests\Config;
 
 use CoolMS\Core\Config\ConfigOverride;
 use CoolMS\Core\Config\ConfigOverrideRepositoryInterface;
-use CoolMS\CoreModule\Config\ChainedConfigLoader;
-use CoolMS\CoreModule\Config\FileConfigLoader;
+use CoolMS\Core\Application\Config\ChainedConfigLoader;
+use CoolMS\Core\Application\Config\FileConfigLoader;
 use LogicException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
@@ -54,7 +54,7 @@ final class ChainedConfigLoaderTest extends TestCase
      * quietly turn a shipped file into a database row on every fresh install,
      * and nothing about the screen would look different.
      *
-     * ⚠️ The unmigrated-database case is NOT tested here any more — it moved
+     * !! The unmigrated-database case is NOT tested here any more -- it moved
      * with the catch into `ConfigOverrideRepository`, which is the only layer
      * allowed to name an ORM exception. From here that case is simply
      * "the port returned null", covered by the test above.

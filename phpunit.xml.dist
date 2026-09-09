@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-    Standalone suite for coolms/core-module
+    Standalone suite for coolms/core-application
 
     The consuming application points its own `core-module` testsuite at this
     same `tests/` directory, so one set of files runs from both places and

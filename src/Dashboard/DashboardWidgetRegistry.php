@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreModule\Dashboard;
+namespace CoolMS\Core\Application\Dashboard;
 
 use CoolMS\Core\Dashboard\DashboardWidget;
 use CoolMS\Core\Dashboard\DashboardWidgetProviderInterface;
@@ -17,7 +17,7 @@ use function in_array;
  * filtered to what the current viewer may be offered.
  *
  * Cached for the registry's lifetime like {@see
- * the VFS file-kind registry} — the providers are cheap and
+ * the VFS file-kind registry} -- the providers are cheap and
  * the answer cannot change within a request.
  */
 final class DashboardWidgetRegistry
@@ -26,10 +26,10 @@ final class DashboardWidgetRegistry
     private ?array $widgets = null;
 
     /**
-     * ⚠️ The iterator is PINNED on the parameter rather than left to the
+     * !! The iterator is PINNED on the parameter rather than left to the
      * extension's `setArguments()`. `App\` is globbed with autowiring and the
      * glob runs after the extension, so an explicit tagged-iterator argument is
-     * silently replaced by "autowire an `iterable`" — which cannot be resolved
+     * silently replaced by "autowire an `iterable`" -- which cannot be resolved
      * and fails the container build. Same trap as the file-kind registry.
      *
      * @param iterable<DashboardWidgetProviderInterface> $providers
@@ -53,8 +53,8 @@ final class DashboardWidgetRegistry
      *    it cannot draw is worse than one that is absent, and rendering it as
      *    something else would show a number that means another thing.
      *
-     * ⚠️ The role filter is a DISPLAY filter and nothing is trusted to it. Each
-     * widget's own endpoint is the authority on whether its data may be read —
+     * !! The role filter is a DISPLAY filter and nothing is trusted to it. Each
+     * widget's own endpoint is the authority on whether its data may be read --
      * see {@see DashboardWidget} for why both exist.
      *
      * @return list<DashboardWidget>

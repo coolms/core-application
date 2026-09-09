@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreModule\ApiManifest;
+namespace CoolMS\Core\Application\ApiManifest;
 
 /**
  * Content module URL manifest -- exposes the publish workflow endpoint.
@@ -22,7 +22,7 @@ final readonly class ContentApiManifest
         // pointing at deleted endpoints would have made the manifest lie to
         // every client that reads it.
         //
-        // Pages admin. Same rule as above — the client asks for
+        // Pages admin. Same rule as above -- the client asks for
         // spaces by key and the registry decides what exists; it never
         // assembles `/home/{uuid}/pages` itself.
         public string $pageSpacesUrl = '', // GET /api/v1/content/pages/spaces

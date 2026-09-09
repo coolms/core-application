@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreModule\Dashboard;
+namespace CoolMS\Core\Application\Dashboard;
 
 use CoolMS\Core\Dashboard\DashboardLayout;
 use CoolMS\Core\Dashboard\DashboardPlacement;
-use CoolMS\CoreModule\Config\ConfigLoaderInterface;
+use CoolMS\Core\Application\Config\ConfigLoaderInterface;
 use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 
@@ -22,7 +22,7 @@ use function is_string;
  *
  * The file lives at `config/modules/core/dashboard/dashboard.yaml` and is found
  * the way every datagrid, navigraph tree and editor profile is found: by `type`
- * and `id` through {@see ConfigLoaderInterface}. That is not merely tidier — it
+ * and `id` through {@see ConfigLoaderInterface}. That is not merely tidier -- it
  * is the whole reason a read-only deployment can still have an editable
  * dashboard. The config seam is where "YAML when the directory is writable, the
  * database when it is not" belongs, ONCE, for every feature; a dashboard that
@@ -32,7 +32,7 @@ use function is_string;
  * ## Everything here is UNTRUSTED, and that is deliberate
  *
  * A human edits this file. So a bad line is dropped and logged rather than
- * thrown, and the dashboard renders without it — the opposite of {@see
+ * thrown, and the dashboard renders without it -- the opposite of {@see
  * DashboardPlacement}, which refuses to exist in a wrong state because a bad
  * width THERE is a programmer's mistake in a module's own code.
  *
@@ -50,8 +50,8 @@ final readonly class DashboardLayoutProvider
      * The main `/admin/dashboard`.
      *
      * An id rather than a bare filename because section dashboards are the next
-     * thing this feeds — {@see \CoolMS\Core\Dashboard\DashboardWidget::$group}
-     * exists for them — and they will each want their own arrangement under the
+     * thing this feeds -- {@see \CoolMS\Core\Dashboard\DashboardWidget::$group}
+     * exists for them -- and they will each want their own arrangement under the
      * same `type`.
      */
     public const string MAIN = 'main';
@@ -71,8 +71,8 @@ final readonly class DashboardLayoutProvider
      */
     public function load(string $dashboard = self::MAIN): DashboardLayout
     {
-        // ⚠️ No theme slug. The loader merges a theme override with
-        // array_merge_recursive, which CONCATENATES lists — it would append a
+        // !! No theme slug. The loader merges a theme override with
+        // array_merge_recursive, which CONCATENATES lists -- it would append a
         // second copy of every placement rather than replacing them. A layout
         // is a list, so it is not overridable that way, and asking for it would
         // silently duplicate cards.

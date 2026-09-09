@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreModule\Tests\Backup;
+namespace CoolMS\Core\Application\Tests\Backup;
 
 use CoolMS\Core\Backup\BackupContributorInterface;
 use CoolMS\Core\Backup\BackupException;
@@ -11,7 +11,7 @@ use CoolMS\Core\Backup\BackupTier;
 use CoolMS\Core\Backup\BackupWriterInterface;
 use CoolMS\Core\Backup\ReconcilesDeletesInterface;
 use CoolMS\Core\Backup\TableBackupPortInterface;
-use CoolMS\CoreModule\Backup\BackupRunner;
+use CoolMS\Core\Application\Backup\BackupRunner;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Clock\MockClock;
@@ -28,7 +28,7 @@ use function ucfirst;
 use const JSON_THROW_ON_ERROR;
 
 /**
- * @covers \CoolMS\CoreModule\Backup\BackupRunner
+ * @covers \CoolMS\Core\Application\Backup\BackupRunner
  */
 final class BackupRunnerTest extends TestCase
 {
@@ -112,7 +112,7 @@ final class BackupRunnerTest extends TestCase
         $writeRunner = $this->runner([new FakeBackupContributor('ghost', BackupTier::Config, [], 1, $log)]);
         $writeRunner->create($this->dir, [BackupTier::Config], []);
 
-        // Restore with NO 'ghost' registered — it should be reported as skipped, not fatal.
+        // Restore with NO 'ghost' registered -- it should be reported as skipped, not fatal.
         $report = $this->runner([])->restore($this->dir, false, []);
 
         self::assertCount(1, $report);
@@ -297,7 +297,7 @@ final class FakeBackupContributor implements BackupContributorInterface
 }
 
 /**
- * Test double that ALSO reconciles deletes — records its reconcile order + dry-run
+ * Test double that ALSO reconciles deletes -- records its reconcile order + dry-run
  * flag and returns a fixed deleted count (no DB).
  */
 final class ReconcilingFakeContributor implements BackupContributorInterface, ReconcilesDeletesInterface

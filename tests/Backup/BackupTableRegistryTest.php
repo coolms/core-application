@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreModule\Tests\Backup;
+namespace CoolMS\Core\Application\Tests\Backup;
 
 use CoolMS\Core\Backup\BackupContributorInterface;
 use CoolMS\Core\Backup\DefersRestoreColumnsInterface;
-use CoolMS\CoreModule\Backup\BackupTableRegistry;
+use CoolMS\Core\Application\Backup\BackupTableRegistry;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \CoolMS\CoreModule\Backup\BackupTableRegistry
+ * @covers \CoolMS\Core\Application\Backup\BackupTableRegistry
  */
 final class BackupTableRegistryTest extends TestCase
 {
@@ -55,7 +55,7 @@ final class BackupTableRegistryTest extends TestCase
      * `restoreAfter()`, and within each, its own declared `tables()` order.
      *
      * The fixture is the real hazard in miniature: `calendar` sorts BEFORE `identity`
-     * alphabetically, so only the `restoreAfter` edge can put users first — which is
+     * alphabetically, so only the `restoreAfter` edge can put users first -- which is
      * exactly the bug that was found in a shipped contributor.
      */
     #[Test]
@@ -95,7 +95,7 @@ final class BackupTableRegistryTest extends TestCase
             'coolms_identity_users',
             'coolms_calendar_calendars',
             'coolms_calendar_items',
-            // Unknown to the registry → parked at the end rather than silently ranked first.
+            // Unknown to the registry -> parked at the end rather than silently ranked first.
             'coolms_not_synced',
         ], $sorted);
     }
@@ -138,7 +138,7 @@ final class BackupTableRegistryTest extends TestCase
 }
 
 /**
- * A contributor that also declares deferred columns — the shape
+ * A contributor that also declares deferred columns -- the shape
  * {@see BackupTableRegistry::deferredColumnsFor()} reads. Named so PHPUnit can stub
  * both interfaces at once.
  */

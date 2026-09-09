@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreModule\Outbox;
+namespace CoolMS\Core\Application\Outbox;
 
 use CoolMS\Core\Outbox\OutboxPublisherInterface;
 use CoolMS\Core\Outbox\OutboxRelayRepositoryInterface;
@@ -16,17 +16,17 @@ use Throwable;
  * and stamps it delivered; a publish failure leaves the row undelivered (attempt
  * bumped) for the next run, so delivery is at-least-once.
  *
- * **MUST run inside a transaction** — the claim uses `FOR UPDATE SKIP LOCKED`, so
- * the lock must be held until the marks commit. The {@see \CoolMS\CoreBundle\Console\RelayOutboxCommand}
+ * **MUST run inside a transaction** -- the claim uses `FOR UPDATE SKIP LOCKED`, so
+ * the lock must be held until the marks commit. The {@see \CoolMS\Core\Bundle\Console\RelayOutboxCommand}
  * wraps this in a CONNECTION-level transaction (not an EntityManager one): a
  * consumer whose work throws closes the EM (the ORM does this deliberately, as
  * a consistency safeguard), so an EM-tied batch transaction would abort on its
- * final flush — a
+ * final flush -- a
  * connection-level transaction is immune (the claim / mark bookkeeping is raw DBAL).
  *
  * **Poison-message isolation:** after a per-row failure the relay resets the EM via
  * {@see ManagerResetterInterface} so the closed manager doesn't cascade
- * `EntityManagerClosed` into every later row of the batch — broker-like per-message
+ * `EntityManagerClosed` into every later row of the batch -- broker-like per-message
  * isolation, in-process.
  */
 final readonly class OutboxRelay

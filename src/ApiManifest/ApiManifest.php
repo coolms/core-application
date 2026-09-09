@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreModule\ApiManifest;
+namespace CoolMS\Core\Application\ApiManifest;
 
 use CoolMS\Core\Config\PlatformDefaults;
 
@@ -25,7 +25,7 @@ final readonly class ApiManifest
         /** @var array<array{code: string, label: string}> */
         public array $supportedLocales = [],
         /**
-         * F6 Phase 1 -- platform-wide default user-facing
+         * Platform-wide default user-facing
          * settings. Carries `locale` (the default locale, previously
          * absent from the manifest), `timezone`, `dateFormat`,
          * `timeFormat`, `weekStart`. The FE renders anonymous /
@@ -33,9 +33,9 @@ final readonly class ApiManifest
          */
         public ?PlatformDefaults $platformDefaults = null,
         public ?object $domainExplorer = null,
-        /** Editor toolbar contributor manifest — see the editor module's manifest. */
+        /** Editor toolbar contributor manifest -- see the editor module's manifest. */
         public ?object $editor = null,
-        /** F.7 viewer manifest — see the document module's viewer manifest. */
+        /** F.7 viewer manifest -- see the document module's viewer manifest. */
         public ?object $viewers = null,
     ) {
     }

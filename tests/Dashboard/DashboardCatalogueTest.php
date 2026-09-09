@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreModule\Tests\Dashboard;
+namespace CoolMS\Core\Application\Tests\Dashboard;
 
 use CoolMS\Core\Dashboard\DashboardWidget;
 use CoolMS\Core\Dashboard\DashboardWidgetProviderInterface;
 use CoolMS\Core\Dashboard\PlacedWidget;
-use CoolMS\CoreModule\Config\ConfigLoaderInterface;
-use CoolMS\CoreModule\Dashboard\DashboardCatalogue;
-use CoolMS\CoreModule\Dashboard\DashboardLayoutProvider;
-use CoolMS\CoreModule\Dashboard\DashboardWidgetRegistry;
+use CoolMS\Core\Application\Config\ConfigLoaderInterface;
+use CoolMS\Core\Application\Dashboard\DashboardCatalogue;
+use CoolMS\Core\Application\Dashboard\DashboardLayoutProvider;
+use CoolMS\Core\Application\Dashboard\DashboardWidgetRegistry;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -71,7 +71,7 @@ final class DashboardCatalogueTest extends TestCase
     }
 
     /**
-     * ⚠️ Each dashboard reads its OWN layout, keyed by the section name. Sharing
+     * !! Each dashboard reads its OWN layout, keyed by the section name. Sharing
      * one would make arranging Content silently re-order the main dashboard.
      */
     #[Test]

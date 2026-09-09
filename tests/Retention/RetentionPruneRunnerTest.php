@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreModule\Tests\Retention;
+namespace CoolMS\Core\Application\Tests\Retention;
 
 use CoolMS\Core\Retention\RetentionPrunerInterface;
-use CoolMS\CoreModule\Retention\RetentionPruneRunner;
+use CoolMS\Core\Application\Retention\RetentionPruneRunner;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 

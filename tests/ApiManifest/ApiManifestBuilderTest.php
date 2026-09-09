@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreModule\Tests\ApiManifest;
+namespace CoolMS\Core\Application\Tests\ApiManifest;
 
 use CoolMS\Core\Config\PlatformDefaults;
 use CoolMS\Core\Config\SupportedLocalesProvider;
-use CoolMS\CoreModule\ApiManifest\ApiManifestBuilder;
+use CoolMS\Core\Application\ApiManifest\ApiManifestBuilder;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
- * F6 Phase 1 -- the builder threads Core-owned platform data
+ * The builder threads Core-owned platform data
  * (supported locales + platform defaults) straight into the manifest,
  * without a contributor.
  *

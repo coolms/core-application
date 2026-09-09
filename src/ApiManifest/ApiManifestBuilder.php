@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreModule\ApiManifest;
+namespace CoolMS\Core\Application\ApiManifest;
 
 use CoolMS\Core\Config\PlatformDefaults;
 use CoolMS\Core\Config\SupportedLocalesProvider;
@@ -14,8 +14,8 @@ use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
  * Contributors are collected via the 'coolms.api_manifest_contributor' DI tag,
  * added through registerForAutoconfiguration() in Core's DI Extension.
  *
- * Two pieces of Core-owned platform data — `SupportedLocalesProvider`
- * and `PlatformDefaults` — are injected DIRECTLY rather than via the
+ * Two pieces of Core-owned platform data -- `SupportedLocalesProvider`
+ * and `PlatformDefaults` -- are injected DIRECTLY rather than via the
  * contributor tag: they are Core's own and need no module indirection.
  */
 final class ApiManifestBuilder

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreModule\Tests\Backup;
+namespace CoolMS\Core\Application\Tests\Backup;
 
 use CoolMS\Core\Backup\BackupReaderInterface;
 use CoolMS\Core\Backup\TableBackupPortInterface;
-use CoolMS\CoreModule\Backup\BackupReader;
+use CoolMS\Core\Application\Backup\BackupReader;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
@@ -19,10 +19,10 @@ use function sprintf;
 use function sys_get_temp_dir;
 
 /**
- * @covers \CoolMS\CoreModule\Backup\BackupReaderInterface::reconcileTable
- * @covers \CoolMS\CoreModule\Backup\BackupReaderInterface::reconcileCompositeTable
- * @covers \CoolMS\CoreModule\Backup\BackupReaderInterface::reconcileTableWithinGroups
- * @covers \CoolMS\CoreModule\Backup\BackupReaderInterface::liveValues
+ * @covers \CoolMS\Core\Application\Backup\BackupReaderInterface::reconcileTable
+ * @covers \CoolMS\Core\Application\Backup\BackupReaderInterface::reconcileCompositeTable
+ * @covers \CoolMS\Core\Application\Backup\BackupReaderInterface::reconcileTableWithinGroups
+ * @covers \CoolMS\Core\Application\Backup\BackupReaderInterface::liveValues
  */
 final class BackupReaderReconcileTest extends TestCase
 {
@@ -30,7 +30,7 @@ final class BackupReaderReconcileTest extends TestCase
 
     private const string TABLE = 'coolms_sso_identities';
 
-    /** A join table with a COMPOSITE PK (no single id) — the composite-reconcile case. */
+    /** A join table with a COMPOSITE PK (no single id) -- the composite-reconcile case. */
     private const string COMPOSITE_TABLE = 'coolms_identity_user_groups';
 
     /** @var list<string> */
@@ -42,7 +42,7 @@ final class BackupReaderReconcileTest extends TestCase
     #[Test]
     public function anAbsentPayloadIsANoOpAndNeverTouchesTheLiveTable(): void
     {
-        // No payload written for the table → the bundle says nothing about it.
+        // No payload written for the table -> the bundle says nothing about it.
         $port = new RecordingReconcilePort(['a', 'b', 'c']);
 
         $deleted = $this->reader($port)->reconcileTable(self::TABLE, false);
@@ -56,7 +56,7 @@ final class BackupReaderReconcileTest extends TestCase
     public function deletesTheLiveRowsAbsentFromTheSnapshot(): void
     {
         $this->writePayload(self::TABLE, [['id' => 'a'], ['id' => 'b']]);
-        // Live has two extra rows (c, d) not in the snapshot → both are stale.
+        // Live has two extra rows (c, d) not in the snapshot -> both are stale.
         $port = new RecordingReconcilePort(['a', 'b', 'c', 'd']);
 
         $deleted = $this->reader($port)->reconcileTable(self::TABLE, false);
@@ -68,7 +68,7 @@ final class BackupReaderReconcileTest extends TestCase
     #[Test]
     public function aPresentButEmptyPayloadReconcilesToZeroRows(): void
     {
-        // The source legitimately has none → every live row is stale (distinct from absent).
+        // The source legitimately has none -> every live row is stale (distinct from absent).
         $this->writePayload(self::TABLE, []);
         $port = new RecordingReconcilePort(['a', 'b']);
 
@@ -116,7 +116,7 @@ final class BackupReaderReconcileTest extends TestCase
     #[Test]
     public function compositeReconcileDeletesTheLiveTuplesAbsentFromTheSnapshot(): void
     {
-        // Snapshot keeps (u1,g1); live also has (u1,g2) + (u2,g1) → two stale tuples.
+        // Snapshot keeps (u1,g1); live also has (u1,g2) + (u2,g1) -> two stale tuples.
         $this->writePayload(self::COMPOSITE_TABLE, [['user_id' => 'u1', 'group_id' => 'g1']]);
         $port = new RecordingReconcilePort(liveCompositeKeys: [
             ['user_id' => 'u1', 'group_id' => 'g1'],
@@ -136,7 +136,7 @@ final class BackupReaderReconcileTest extends TestCase
     #[Test]
     public function compositeReconcileHonoursTheKeyTupleNotJustOneColumn(): void
     {
-        // (u1,g1) is kept; (u1,g2) shares user_id but is a DIFFERENT membership → stale.
+        // (u1,g1) is kept; (u1,g2) shares user_id but is a DIFFERENT membership -> stale.
         // A naive single-column (user_id) diff would wrongly keep it.
         $this->writePayload(self::COMPOSITE_TABLE, [['user_id' => 'u1', 'group_id' => 'g1']]);
         $port = new RecordingReconcilePort(liveCompositeKeys: [
@@ -181,7 +181,7 @@ final class BackupReaderReconcileTest extends TestCase
     #[Test]
     public function groupedReconcileDeletesTheWhitelistedLiveRowsAbsentFromTheSnapshot(): void
     {
-        // Snapshot keeps 'a'; the live whitelist (rows of allowed groups) is a,b,c → b,c are stale.
+        // Snapshot keeps 'a'; the live whitelist (rows of allowed groups) is a,b,c -> b,c are stale.
         $this->writePayload(self::TABLE, [['id' => 'a']]);
         $port = new RecordingReconcilePort(liveWhereIn: ['a', 'b', 'c']);
 
@@ -279,7 +279,7 @@ final class BackupReaderReconcileTest extends TestCase
 }
 
 /**
- * Records reconcile calls and returns canned live-id / live-composite-key sets — the
+ * Records reconcile calls and returns canned live-id / live-composite-key sets -- the
  * diff logic under test lives entirely in {@see BackupReaderInterface}, so the port is a pure spy.
  */
 final class RecordingReconcilePort implements TableBackupPortInterface

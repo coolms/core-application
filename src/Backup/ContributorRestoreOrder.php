@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreModule\Backup;
+namespace CoolMS\Core\Application\Backup;
 
 use CoolMS\Core\Backup\BackupContributorInterface;
 use CoolMS\Core\Backup\BackupException;
@@ -13,7 +13,7 @@ use function in_array;
 use function sprintf;
 
 /**
- * Topologically orders contributor keys on `restoreAfter()` — every key's declared
+ * Topologically orders contributor keys on `restoreAfter()` -- every key's declared
  * dependencies (that are also in the set) precede it.
  *
  * Extracted from {@see BackupRunner} because it now has TWO callers with the same
@@ -21,7 +21,7 @@ use function sprintf;
  * while {@see BackupTableRegistry} orders every registered contributor to derive a
  * platform-wide FK-safe table order for the sync applier. Dependencies outside the
  * given set are ignored (a bundle may legitimately omit a module the target doesn't
- * run) — which is exactly why the set is a parameter rather than read from the tag.
+ * run) -- which is exactly why the set is a parameter rather than read from the tag.
  *
  * Stateless and dependency-free: constructed with `new`, not wired.
  */

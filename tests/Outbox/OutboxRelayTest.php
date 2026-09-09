@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreModule\Tests\Outbox;
+namespace CoolMS\Core\Application\Tests\Outbox;
 
 use CoolMS\Core\Outbox\OutboxMessagePublished;
 use CoolMS\Core\Outbox\OutboxPublisherInterface;
 use CoolMS\Core\Outbox\OutboxRelayRepositoryInterface;
 use CoolMS\Core\Persistence\ManagerResetterInterface;
-use CoolMS\CoreModule\Outbox\OutboxRelay;
+use CoolMS\Core\Application\Outbox\OutboxRelay;
 use DateTimeImmutable;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -20,7 +20,7 @@ use function array_map;
 /**
  * The outbox relay: publishes each claimed message then marks it delivered; a
  * publish failure marks the row failed (attempt bumped, stays undelivered) and
- * the relay carries on with the rest — delivery is at-least-once.
+ * the relay carries on with the rest -- delivery is at-least-once.
  */
 final class OutboxRelayTest extends TestCase
 {

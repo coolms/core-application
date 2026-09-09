@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreModule\ApiManifest;
+namespace CoolMS\Core\Application\ApiManifest;
 
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 

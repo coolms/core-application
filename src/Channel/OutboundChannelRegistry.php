@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreModule\Channel;
+namespace CoolMS\Core\Application\Channel;
 
 use CoolMS\Core\Channel\OutboundChannelInterface;
 use CoolMS\Core\Channel\OutboundChannelRegistryInterface;
@@ -12,21 +12,21 @@ use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 use function sprintf;
 
 /**
- * F3 — indexes every tagged {@see OutboundChannelInterface} by its
+ * F3 -- indexes every tagged {@see OutboundChannelInterface} by its
  * `channelId()` into a single lookup surface.
  *
  * The `#[AutowireIterator]` pin is deliberate (the tagged-iterator glob
- * footgun, same as {@see \CoolMS\CoreModule\Retention\RetentionPruneRunner}):
+ * footgun, same as {@see \CoolMS\Core\Application\Retention\RetentionPruneRunner}):
  * binding the collection through the Core Extension's `setArgument` would be
  * clobbered by the `App\:` services glob re-registering this class, so the tag
  * is consumed on the constructor param directly.
  *
- * Two channels claiming the same id are a fatal misconfiguration — caught here
+ * Two channels claiming the same id are a fatal misconfiguration -- caught here
  * (on first index build) rather than silently letting one shadow the other.
  */
 final class OutboundChannelRegistry implements OutboundChannelRegistryInterface
 {
-    /** @var array<string, OutboundChannelInterface>|null lazily built id→channel map (ENABLED only) */
+    /** @var array<string, OutboundChannelInterface>|null lazily built id->channel map (ENABLED only) */
     private ?array $byId = null;
 
     /** @var list<string>|null installed-but-switched-off ids, built alongside {@see} */
@@ -35,9 +35,9 @@ final class OutboundChannelRegistry implements OutboundChannelRegistryInterface
     /**
      * @param iterable<OutboundChannelInterface>   $channels      tagged `coolms.outbound_channel`
      * @param array<string, array{enabled?: bool}> $channelConfig `coolms_core.outbound_channels`,
-     *                                                            bound by {@see \CoolMS\CoreBundle\DependencyInjection\Compiler\OutboundChannelRegistryConfigPass}
+     *                                                            bound by {@see \CoolMS\Core\Bundle\DependencyInjection\Compiler\OutboundChannelRegistryConfigPass}
      *                                                            (a compiler pass, not `#[Autowire(param:)]`, so the wiring stays in
-     *                                                            configuration where an operator can find it — and so the `App\:`
+     *                                                            configuration where an operator can find it -- and so the `App\:`
      *                                                            glob cannot clobber it)
      */
     public function __construct(
@@ -70,9 +70,9 @@ final class OutboundChannelRegistry implements OutboundChannelRegistryInterface
     }
 
     /**
-     * The ENABLED id→channel map.
+     * The ENABLED id->channel map.
      *
-     * A channel absent from configuration is ENABLED — the default has to be
+     * A channel absent from configuration is ENABLED -- the default has to be
      * "on" so installing a channel keeps working without an accompanying config
      * edit, and so this gate cannot silently switch off a channel a site already
      * depends on. Switching one off is therefore always an explicit decision.

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreModule\Backup;
+namespace CoolMS\Core\Application\Backup;
 
 use CoolMS\Core\Backup\BackupException;
 use CoolMS\Core\Backup\BackupWriterInterface;
@@ -67,7 +67,7 @@ final class BackupWriter implements BackupWriterInterface
      * Dump a whole table into `data/<key>/<table>.json`; returns rows written.
      *
      * Streams: rows are pulled one at a time off {@see TableBackupPortInterface::streamTable()}
-     * and appended to the payload as they arrive, so peak memory is one row — not the
+     * and appended to the payload as they arrive, so peak memory is one row -- not the
      * whole table, and not the whole table's JSON on top of it. A full-install backup
      * of `coolms_vfs_nodes` used to need both at once.
      */
@@ -77,7 +77,7 @@ final class BackupWriter implements BackupWriterInterface
     }
 
     /**
-     * Read a live table's rows WITHOUT writing them — the export-side mirror of
+     * Read a live table's rows WITHOUT writing them -- the export-side mirror of
      * {@see BackupReader::readRows()}. For a contributor that must filter or
      * transform rows before writing them (e.g. dropping module-owned definition
      * versions the installer rebuilds), then hand the survivors to
@@ -94,11 +94,11 @@ final class BackupWriter implements BackupWriterInterface
     }
 
     /**
-     * A live table's rows one at a time, without writing them — the bounded-memory
+     * A live table's rows one at a time, without writing them -- the bounded-memory
      * {@see readTable()}. A contributor that filters can wrap this in a generator and
      * pass it straight to {@see dumpRows()}, so neither the source rows nor the kept
      * ones are ever all in memory. Re-reads the table on each call (it is a cursor,
-     * not a buffer), so a two-pass filter costs two queries and constant memory —
+     * not a buffer), so a two-pass filter costs two queries and constant memory --
      * deliberately the cheap side of that trade.
      *
      * @return iterable<array<string, mixed>>
@@ -118,7 +118,7 @@ final class BackupWriter implements BackupWriterInterface
      * Takes an `iterable`, not an `array`, so a contributor that filters can hand
      * over a GENERATOR and never hold the kept rows in memory either (see
      * the definition-ladder backup contributor's `export()`).
-     * Rows are consumed exactly once — the count comes from the walk, not `count()`.
+     * Rows are consumed exactly once -- the count comes from the walk, not `count()`.
      *
      * @param iterable<array<int|string, mixed>> $rows
      */
@@ -133,9 +133,9 @@ final class BackupWriter implements BackupWriterInterface
 
     /**
      * Write an arbitrary JSON payload under this contributor's dir (name without
-     * extension, e.g. `putJson('meta', [...])` → `data/<key>/meta.json`).
+     * extension, e.g. `putJson('meta', [...])` -> `data/<key>/meta.json`).
      *
-     * For SMALL, non-row payloads — a contributor's own counters/metadata, whose size
+     * For SMALL, non-row payloads -- a contributor's own counters/metadata, whose size
      * does not scale with the install (e.g. VFS's `_blobs_meta`). Table payloads go
      * through {@see dumpRows()}, which streams; this deliberately still encodes in one
      * shot because a fixed-size map does not need the machinery.
@@ -155,7 +155,7 @@ final class BackupWriter implements BackupWriterInterface
      * `<namespace>/` dir, sha256-sharded (`<namespace>/aa/bb/<hash>`). For
      * contributors (e.g. VFS content) whose rows reference file bytes that live
      * outside the DB. `$namespace` separates blob classes that restore
-     * differently — e.g. VFS uses `blobs` for the content-addressed secure store
+     * differently -- e.g. VFS uses `blobs` for the content-addressed secure store
      * and `public-blobs` for bytes materialised in `public/`.
      */
     public function putBlob(string $hash, string $bytes, string $namespace = 'blobs'): void
@@ -184,8 +184,8 @@ final class BackupWriter implements BackupWriterInterface
      * Write `$rows` to `$path` as a pretty-printed JSON array, encoding and flushing
      * ONE ROW AT A TIME. Returns rows written.
      *
-     * Byte-identical to the `json_encode($rows, JSON_PRETTY_PRINT)` it replaces — an
-     * existing bundle re-exported through here does not change — but it never holds
+     * Byte-identical to the `json_encode($rows, JSON_PRETTY_PRINT)` it replaces -- an
+     * existing bundle re-exported through here does not change -- but it never holds
      * the encoded document in memory. That whole-document string was an unbounded
      * allocation: it grows with the table, and PHP doubles the string buffer as it
      * grows, so the transient peak is ~2x the payload ON TOP OF the rows themselves.
@@ -238,7 +238,7 @@ final class BackupWriter implements BackupWriterInterface
 
     /**
      * `fwrite` reports a short write (disk full, quota) by returning fewer bytes than
-     * given — silently, so an unchecked write yields a truncated payload that still
+     * given -- silently, so an unchecked write yields a truncated payload that still
      * looks like a successful backup. Fail loudly instead.
      *
      * @param resource $handle

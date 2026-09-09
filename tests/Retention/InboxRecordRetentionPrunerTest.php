@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreModule\Tests\Retention;
+namespace CoolMS\Core\Application\Tests\Retention;
 
 use CoolMS\Core\Inbox\ProcessedMessageStoreInterface;
-use CoolMS\CoreModule\Retention\InboxRecordRetentionPruner;
+use CoolMS\Core\Application\Retention\InboxRecordRetentionPruner;
 use DateTimeImmutable;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -13,11 +13,11 @@ use Symfony\Component\Clock\MockClock;
 
 /**
  * Pins the F7 inbox's entry into the unified retention seam: it prunes
- * PROCESSED idempotency rows at `now − processed_retention_days`, previews without
+ * PROCESSED idempotency rows at `now - processed_retention_days`, previews without
  * deleting, and a non-positive window disables the sweep (misconfig can't wipe the
  * dedup log while a replay is still possible).
  *
- * @covers \CoolMS\CoreModule\Retention\InboxRecordRetentionPruner
+ * @covers \CoolMS\Core\Application\Retention\InboxRecordRetentionPruner
  */
 final class InboxRecordRetentionPrunerTest extends TestCase
 {
@@ -28,7 +28,7 @@ final class InboxRecordRetentionPrunerTest extends TestCase
         $inbox = $this->createMock(ProcessedMessageStoreInterface::class);
         $inbox->expects(self::once())
             ->method('deleteProcessedOlderThan')
-            ->with(new DateTimeImmutable('2026-05-31 12:00:00')) // now − 30 days
+            ->with(new DateTimeImmutable('2026-05-31 12:00:00')) // now - 30 days
             ->willReturn(4);
 
         $pruner = new InboxRecordRetentionPruner($inbox, $clock, 30);

@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreModule\ChangeFeed;
+namespace CoolMS\Core\Application\ChangeFeed;
 
 use CoolMS\Core\Backup\TableBackupPortInterface;
 use CoolMS\Core\ChangeFeed\SyncApplyResult;
 use CoolMS\Core\ChangeFeed\SyncChangeDelta;
 use CoolMS\Core\ChangeFeed\SyncChangeOp;
 use CoolMS\Core\ChangeFeed\SyncRowSourceInterface;
-use CoolMS\CoreModule\Backup\BackupTableRegistry;
+use CoolMS\Core\Application\Backup\BackupTableRegistry;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 
 use function array_keys;
@@ -19,20 +19,20 @@ use function is_scalar;
 use function max;
 
 /**
- * Applies a batch of change-feed deltas to the local DB — the CONVERGE step of the
- * controller→edge apply half. Given the deltas an edge read from the feed
+ * Applies a batch of change-feed deltas to the local DB -- the CONVERGE step of the
+ * controller->edge apply half. Given the deltas an edge read from the feed
  * ({@see \CoolMS\Core\ChangeFeed\SyncChangeFeedReaderInterface}) plus a
  * {@see SyncRowSourceInterface} pointing at the authoritative side, it makes the local
  * rows match: hydrate + `restoreRows` each `upsert`, `deleteByIds` each `delete`.
  *
  * **Coalesce first (latest-`seq` op wins per row):** a row changed N times in the batch is
- * applied ONCE at its final state — upsert-then-delete collapses to a delete, delete-then-
+ * applied ONCE at its final state -- upsert-then-delete collapses to a delete, delete-then-
  * upsert to an upsert. This is why the lean feed + current-state hydration is enough: only
  * the row's END state matters, never its intermediate history.
  *
  * **Idempotent, no wrapping transaction** (the {@see TableBackupPortInterface} convention):
  * `restoreRows` is delete-by-id + insert and `deleteByIds` is a plain delete, so re-running
- * a batch is a no-op — a partial apply self-heals on the next pass rather than needing a
+ * a batch is a no-op -- a partial apply self-heals on the next pass rather than needing a
  * fragile nested transaction.
  *
  * **FK ORDERING (was a documented gap; the claim that it only failed LOUDLY was
@@ -41,18 +41,18 @@ use function max;
  * contributor's `import()` applies to the very same tables. Two distinct hazards, two
  * answers, both sourced from {@see BackupTableRegistry} so contributors stay the single
  * place FK truth is written down:
- *  - **Cross-table** (`coolms_calendar_items` → `coolms_calendar_calendars`): upserts run
- *    in {@see BackupTableRegistry::orderedTables()} order, deletes in its REVERSE — parents
+ *  - **Cross-table** (`coolms_calendar_items` -> `coolms_calendar_calendars`): upserts run
+ *    in {@see BackupTableRegistry::orderedTables()} order, deletes in its REVERSE -- parents
  *    land before children, children die before parents.
  *  - **Self-referential** (`calendars.parent_id`, `items.parent_item_id`,
  *    `vfs_nodes.parent_id`): the deferral pass, per
  *    {@see BackupTableRegistry::deferredColumnsFor()}. This one was NOT merely a loud
- *    failure — `restoreRows` is delete-by-id + insert per row, so a batch carrying a
+ *    failure -- `restoreRows` is delete-by-id + insert per row, so a batch carrying a
  *    parent and its child SILENTLY blanked (SET NULL) or deleted (CASCADE) the child's
  *    link, exactly as was found on the restore path. Nothing threw.
  *
  * Ordering can't fix everything: the Definition ladder's circular FK still needs its
- * two-phase repoint, which no ordering expresses — a batch touching it FK-violates and
+ * two-phase repoint, which no ordering expresses -- a batch touching it FK-violates and
  * throws (loud + retryable, never silent).
  *
  * `$highestSeq` is reported for cursor advancement; the commit-ordering safe-watermark is
@@ -72,7 +72,7 @@ final readonly class SyncChangeApplier
      */
     public function apply(array $deltas, SyncRowSourceInterface $source): SyncApplyResult
     {
-        // Coalesce: keep the highest-seq delta per (table, row) — its op is the final state.
+        // Coalesce: keep the highest-seq delta per (table, row) -- its op is the final state.
         /** @var array<string, SyncChangeDelta> $winner */
         $winner = [];
         $highestSeq = 0;
@@ -109,7 +109,7 @@ final readonly class SyncChangeApplier
                 // OWNED-COLLECTION SET-REPLACE. Here `$ids` are OWNER ids and the
                 // delta means "this owner's set changed", so purge the owner's rows and
                 // re-insert whatever the source now holds. Purge FIRST: these rows have no
-                // `id`, so `restoreRows` skips its delete-by-id and plain-inserts — without
+                // `id`, so `restoreRows` skips its delete-by-id and plain-inserts -- without
                 // the purge a re-added member would violate the composite PK. An emptied
                 // set (cleared, or the owner deleted) hydrates zero rows and simply stays
                 // purged, which is exactly how a `clear()` converges without anyone ever
@@ -133,7 +133,7 @@ final readonly class SyncChangeApplier
 
     /**
      * The column a delta's `row_id` names in `$table`: the owner column for an
-     * owned-collection table, `id` for everything else. Never assume `id` — the one place
+     * owned-collection table, `id` for everything else. Never assume `id` -- the one place
      * the feed's column name lies is exactly the case that breaks silently.
      */
     private function keyColumn(string $table): string
@@ -143,8 +143,8 @@ final readonly class SyncChangeApplier
 
     /**
      * Insert/replace `$rows`, holding back any self-referential columns the owning
-     * contributor declared and re-applying them once every row is in place — the same
-     * two-phase dance {@see \CoolMS\CoreModule\Backup\BackupReaderInterface::loadTableDeferring()}
+     * contributor declared and re-applying them once every row is in place -- the same
+     * two-phase dance {@see \CoolMS\Core\Application\Backup\BackupReaderInterface::loadTableDeferring()}
      * runs on the restore path, for the same reason: a batch carrying a parent and its
      * child otherwise loses the link SILENTLY (the parent's delete-by-id fires SET NULL
      * or CASCADE at the child that was just inserted).

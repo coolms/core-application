@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreModule\Tests\Translation;
+namespace CoolMS\Core\Application\Tests\Translation;
 
 use CoolMS\Core\Translation\Translatable;
 use CoolMS\Core\Translation\TranslatableMisconfigurationException;
-use CoolMS\CoreModule\Translation\LabelResolver;
+use CoolMS\Core\Application\Translation\LabelResolver;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -29,7 +29,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 final class LabelResolverTest extends TestCase
 {
-    // ── Happy path: key derivation + translation flow ─────────────────────────
+    // -- Happy path: key derivation + translation flow -------------------------
 
     #[Test]
     public function resolveReturnsTranslationWhenCatalogueHasIt(): void
@@ -93,7 +93,7 @@ final class LabelResolverTest extends TestCase
         self::assertNull($capturedLocale);
     }
 
-    // ── Key derivation ────────────────────────────────────────────────────────
+    // -- Key derivation --------------------------------------------------------
 
     #[Test]
     public function keyForBuildsSnakeCasedShortClassNameDotIdDotField(): void
@@ -134,7 +134,7 @@ final class LabelResolverTest extends TestCase
         $resolver->keyFor(new NoIdFixture('Foo'), 'label');
     }
 
-    // ── Inline-child seam: keyForChild() / resolveChild() ─────────────────────
+    // -- Inline-child seam: keyForChild() / resolveChild() ---------------------
 
     #[Test]
     public function keyForChildBuildsParentKeyPlusChildKindIdField(): void
@@ -196,7 +196,7 @@ final class LabelResolverTest extends TestCase
         $resolver->keyForChild($parent, 'option', 'open', 'description');
     }
 
-    // ── Domain derivation ─────────────────────────────────────────────────────
+    // -- Domain derivation -----------------------------------------------------
 
     #[Test]
     public function explicitAttributeDomainWinsOverNamespaceDerivation(): void
@@ -233,7 +233,7 @@ final class LabelResolverTest extends TestCase
         self::assertSame('messages', $captured);
     }
 
-    // ── domainFor() (write-side bridge needs the catalogue file stem) ──────────
+    // -- domainFor() (write-side bridge needs the catalogue file stem) ----------
 
     #[Test]
     public function domainForReturnsExplicitAttributeDomain(): void
@@ -263,7 +263,7 @@ final class LabelResolverTest extends TestCase
         $resolver->domainFor(new PlainFixture('foo'));
     }
 
-    // ── Exception cases ───────────────────────────────────────────────────────
+    // -- Exception cases -------------------------------------------------------
 
     #[Test]
     public function resolveRaisesWhenClassIsNotTranslatable(): void
@@ -287,7 +287,7 @@ final class LabelResolverTest extends TestCase
         $resolver->resolve($definition, 'description');
     }
 
-    // ── Caching ───────────────────────────────────────────────────────────────
+    // -- Caching ---------------------------------------------------------------
 
     #[Test]
     public function reusesReflectionResultAcrossCallsForSameClass(): void
@@ -306,7 +306,7 @@ final class LabelResolverTest extends TestCase
         self::assertSame('field_definition_fixture.color.label', $resolver->keyFor($a, 'label'));
     }
 
-    // ── Helpers ───────────────────────────────────────────────────────────────
+    // -- Helpers ---------------------------------------------------------------
 
     private function translatorReturning(string $returnValue): TranslatorInterface
     {
@@ -360,7 +360,7 @@ final class LabelResolverTest extends TestCase
     }
 }
 
-// ── Fixtures ──────────────────────────────────────────────────────────────────
+// -- Fixtures ------------------------------------------------------------------
 
 #[Translatable(fields: ['label'])]
 final class FieldDefinitionFixture

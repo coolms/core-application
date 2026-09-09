@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreModule\Template;
+namespace CoolMS\Core\Application\Template;
 
 /**
  * Neutral SPI for assembling a template-rendering context. Modules
  * implement this with their own contributor sets and base context
  * shapes (Web's SSR builder has its own pre-existing concrete
  * implementation living in `Web\Application\Builder\TemplateContextBuilder`
- * — that builder doesn't yet implement this interface for backward
+ * -- that builder doesn't yet implement this interface for backward
  * compatibility, but its semantics match this contract).
  *
- * Phase 1 of the cross-module context-builder refactor introduces
+ * The first step of the cross-module context-builder refactor introduces
  * this interface plus a Document-side implementation; Web's
  * builder migrates to this contract in a follow-up if/when its
  * `RenderContext` argument shape needs broadening.

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreModule\Backup;
+namespace CoolMS\Core\Application\Backup;
 
 use CoolMS\Core\Backup\BackupContributorInterface;
 use CoolMS\Core\Backup\BackupException;
@@ -34,7 +34,7 @@ use const JSON_UNESCAPED_UNICODE;
 
 /**
  * Runs every registered {@see BackupContributorInterface} to build or replay a
- * backup bundle — the single seam behind `coolms:backup:create` and
+ * backup bundle -- the single seam behind `coolms:backup:create` and
  * `coolms:backup:restore`, so the whole platform is backed up/restored in one
  * place with each module owning its slice.
  *
@@ -119,7 +119,7 @@ final readonly class BackupRunner
      * this instance are reported as skipped.
      *
      * When `$reconcileDeletes` is set, a SECOND pass runs after the additive
-     * restore — in REVERSE dependency order (children before parents) — invoking
+     * restore -- in REVERSE dependency order (children before parents) -- invoking
      * every contributor that implements {@see ReconcilesDeletesInterface} to delete
      * its live rows absent from the snapshot. This is opt-in and
      * DESTRUCTIVE; the default restore stays purely additive. Contributors without

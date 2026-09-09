@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreModule\ApiPlatform\Input;
+namespace CoolMS\Core\Application\ApiPlatform\Input;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
