@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreModule\Dashboard;
+namespace CoolMS\CoreApp\Dashboard;
 
 use CoolMS\Core\Dashboard\DashboardLayout;
 use CoolMS\Core\Dashboard\DashboardPlacement;
-use CoolMS\CoreModule\Config\ConfigLoaderInterface;
+use CoolMS\CoreApp\Config\ConfigLoaderInterface;
 use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreModule\Translation;
+namespace CoolMS\CoreApp\Translation;
 
 use CoolMS\Core\Translation\InlineLabelCatalogueReaderInterface;
 

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreModule\Retention;
+namespace CoolMS\CoreApp\Retention;
 
 use CoolMS\Core\Inbox\ProcessedMessageStoreInterface;
 use CoolMS\Core\Retention\RetentionPrunerInterface;
@@ -17,7 +17,7 @@ use function sprintf;
  * Bounds the F7 consumer-idempotency inbox table: the inbox stores one
  * row per processed message so a redelivery is a no-op dedup, and a processed row
  * is only needed while a replay is still possible -- after that it just accumulates.
- * {@see \CoolMS\CoreModule\Outbox\OutboxMaintenanceService} already prunes it via
+ * {@see \CoolMS\CoreApp\Outbox\OutboxMaintenanceService} already prunes it via
  * the standalone `coolms:outbox:prune` command, but the F7 rails were absent from
  * the platform's UNIFIED retention seam ({@see RetentionPrunerInterface} -> the
  * `coolms:retention:prune` command + the `retention.prune` scheduled handler) -- so

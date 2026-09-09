@@ -1,7 +1,7 @@
-# coolms/core-module
+# coolms/core-app
 
-[![CI](https://github.com/coolms/core-module/actions/workflows/ci.yml/badge.svg)](https://github.com/coolms/core-module/actions/workflows/ci.yml)
-[![Latest Version](https://img.shields.io/packagist/v/coolms/core-module)](https://packagist.org/packages/coolms/core-module)
+[![CI](https://github.com/coolms/core-app/actions/workflows/ci.yml/badge.svg)](https://github.com/coolms/core-app/actions/workflows/ci.yml)
+[![Latest Version](https://img.shields.io/packagist/v/coolms/core-app)](https://packagist.org/packages/coolms/core-app)
 [![PHP](https://img.shields.io/badge/php-%E2%89%A5%208.5-777bb4)](https://www.php.net/releases/8.5/en.php)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
@@ -17,12 +17,12 @@ A *module* in this platform is the part that wires domain to infrastructure. A
 ## Installation
 
 ```bash
-composer require coolms/core-module coolms/core-doctrine
+composer require coolms/core-app coolms/core-doctrine
 ```
 
 > **The adapter is part of the install, not a second step.** This package
 > requires the virtual `coolms/core-persistence-implementation`, and only an
-> adapter provides it, so `composer require coolms/core-module` on its own
+> adapter provides it, so `composer require coolms/core-app` on its own
 > cannot resolve — Composer reports that the virtual package "could not be found
 > in any version", which reads like a broken package rather than a missing
 > argument.

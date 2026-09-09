@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreModule\ChangeFeed;
+namespace CoolMS\CoreApp\ChangeFeed;
 
 use CoolMS\Core\ChangeFeed\SyncBlobContributorInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
@@ -18,7 +18,7 @@ use function count;
  * the edge's pull loop, both in the sync module -- never name a specific module.
  *
  * The `#[AutowireIterator]` pin is deliberate: the same tagged-iterator glob footgun
- * {@see \CoolMS\CoreModule\Backup\BackupRunner} documents (a Core-Extension
+ * {@see \CoolMS\CoreApp\Backup\BackupRunner} documents (a Core-Extension
  * `setArgument` would be clobbered by the `App\:` services glob re-registering this class).
  */
 #[Autoconfigure(public: true)] // consumed from the sync module; survive container pruning

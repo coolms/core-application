@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreModule\Translation;
+namespace CoolMS\CoreApp\Translation;
 
 /**
  * Internal cache row for {@see LabelResolver}.

@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreModule\Tests\Option;
+namespace CoolMS\CoreApp\Tests\Option;
 
 use CoolMS\Core\Option\Exception\UnknownOptionSourceException;
 use CoolMS\Core\Option\Option;
 use CoolMS\Core\Option\OptionSourceProviderInterface;
 use CoolMS\Core\Option\PublicOptionSourceInterface;
-use CoolMS\CoreModule\Option\OptionSourceRegistry;
+use CoolMS\CoreApp\Option\OptionSourceRegistry;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 

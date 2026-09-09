@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreModule\Tests\Outbox;
+namespace CoolMS\CoreApp\Tests\Outbox;
 
 use CoolMS\Core\Inbox\ProcessedMessageStoreInterface;
 use CoolMS\Core\Outbox\OutboxRelayRepositoryInterface;
-use CoolMS\CoreModule\Outbox\OutboxMaintenanceService;
+use CoolMS\CoreApp\Outbox\OutboxMaintenanceService;
 use DateTimeImmutable;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;

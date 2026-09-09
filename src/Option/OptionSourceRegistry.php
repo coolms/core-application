@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreModule\Option;
+namespace CoolMS\CoreApp\Option;
 
 use CoolMS\Core\Option\Exception\UnknownOptionSourceException;
 use CoolMS\Core\Option\Option;

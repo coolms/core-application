@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreModule\ApiManifest;
+namespace CoolMS\CoreApp\ApiManifest;
 
 /**
  * Allows modules to contribute a typed section to the API manifest

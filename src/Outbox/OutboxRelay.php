@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreModule\Outbox;
+namespace CoolMS\CoreApp\Outbox;
 
 use CoolMS\Core\Outbox\OutboxPublisherInterface;
 use CoolMS\Core\Outbox\OutboxRelayRepositoryInterface;

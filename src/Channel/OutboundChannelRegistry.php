@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreModule\Channel;
+namespace CoolMS\CoreApp\Channel;
 
 use CoolMS\Core\Channel\OutboundChannelInterface;
 use CoolMS\Core\Channel\OutboundChannelRegistryInterface;
@@ -16,7 +16,7 @@ use function sprintf;
  * `channelId()` into a single lookup surface.
  *
  * The `#[AutowireIterator]` pin is deliberate (the tagged-iterator glob
- * footgun, same as {@see \CoolMS\CoreModule\Retention\RetentionPruneRunner}):
+ * footgun, same as {@see \CoolMS\CoreApp\Retention\RetentionPruneRunner}):
  * binding the collection through the Core Extension's `setArgument` would be
  * clobbered by the `App\:` services glob re-registering this class, so the tag
  * is consumed on the constructor param directly.

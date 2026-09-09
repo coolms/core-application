@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreModule\Template;
+namespace CoolMS\CoreApp\Template;
 
 /**
  * Neutral SPI for assembling a template-rendering context. Modules

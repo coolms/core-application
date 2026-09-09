@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreModule\Config;
+namespace CoolMS\CoreApp\Config;
 
 /**
  * Loads raw config arrays by type and id from the filesystem.

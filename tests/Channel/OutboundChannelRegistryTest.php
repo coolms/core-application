@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreModule\Tests\Channel;
+namespace CoolMS\CoreApp\Tests\Channel;
 
 use CoolMS\Core\Channel\DeliveryResult;
 use CoolMS\Core\Channel\OutboundChannelInterface;
 use CoolMS\Core\Channel\OutboundMessage;
-use CoolMS\CoreModule\Channel\OutboundChannelRegistry;
+use CoolMS\CoreApp\Channel\OutboundChannelRegistry;
 use LogicException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreModule\Config;
+namespace CoolMS\CoreApp\Config;
 
 /**
  * Saves config DATA back, wherever this deployment can put it.

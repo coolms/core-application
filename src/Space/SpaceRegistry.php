@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreModule\Space;
+namespace CoolMS\CoreApp\Space;
 
 use CoolMS\Core\Identity\UserInterface;
 use CoolMS\Core\Space\SpaceInterface;

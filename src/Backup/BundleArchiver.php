@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreModule\Backup;
+namespace CoolMS\CoreApp\Backup;
 
 use CoolMS\Core\Backup\BackupException;
 use FilesystemIterator;

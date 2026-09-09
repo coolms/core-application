@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreModule\Service;
+namespace CoolMS\CoreApp\Service;
 
 /**
  * Renders naming patterns with {const:name} substitution.

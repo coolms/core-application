@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreModule\Tests\Dashboard;
+namespace CoolMS\CoreApp\Tests\Dashboard;
 
 use CoolMS\Core\Dashboard\DashboardWidget;
 use CoolMS\Core\Dashboard\DashboardWidgetProviderInterface;
 use CoolMS\Core\Dashboard\PlacedWidget;
-use CoolMS\CoreModule\Config\ConfigLoaderInterface;
-use CoolMS\CoreModule\Dashboard\DashboardCatalogue;
-use CoolMS\CoreModule\Dashboard\DashboardLayoutProvider;
-use CoolMS\CoreModule\Dashboard\DashboardWidgetRegistry;
+use CoolMS\CoreApp\Config\ConfigLoaderInterface;
+use CoolMS\CoreApp\Dashboard\DashboardCatalogue;
+use CoolMS\CoreApp\Dashboard\DashboardLayoutProvider;
+use CoolMS\CoreApp\Dashboard\DashboardWidgetRegistry;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;

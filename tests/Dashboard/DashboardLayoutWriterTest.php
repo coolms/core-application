@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreModule\Tests\Dashboard;
+namespace CoolMS\CoreApp\Tests\Dashboard;
 
 use CoolMS\Core\Dashboard\DashboardPlacement;
 use CoolMS\Core\Dashboard\DashboardWidget;
 use CoolMS\Core\Dashboard\DashboardWidgetProviderInterface;
-use CoolMS\CoreModule\Config\ConfigLoaderInterface;
-use CoolMS\CoreModule\Config\ConfigWriterInterface;
-use CoolMS\CoreModule\Dashboard\DashboardLayoutProvider;
-use CoolMS\CoreModule\Dashboard\DashboardLayoutWriter;
-use CoolMS\CoreModule\Dashboard\DashboardWidgetRegistry;
+use CoolMS\CoreApp\Config\ConfigLoaderInterface;
+use CoolMS\CoreApp\Config\ConfigWriterInterface;
+use CoolMS\CoreApp\Dashboard\DashboardLayoutProvider;
+use CoolMS\CoreApp\Dashboard\DashboardLayoutWriter;
+use CoolMS\CoreApp\Dashboard\DashboardWidgetRegistry;
 use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;

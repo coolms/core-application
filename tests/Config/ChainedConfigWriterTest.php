@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreModule\Tests\Config;
+namespace CoolMS\CoreApp\Tests\Config;
 
-use CoolMS\CoreModule\Config\ChainedConfigWriter;
-use CoolMS\CoreModule\Config\ConfigWriterInterface;
+use CoolMS\CoreApp\Config\ChainedConfigWriter;
+use CoolMS\CoreApp\Config\ConfigWriterInterface;
 use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreModule\Dashboard;
+namespace CoolMS\CoreApp\Dashboard;
 
 use CoolMS\Core\Dashboard\DashboardPlacement;
-use CoolMS\CoreModule\Config\ConfigWriterInterface;
+use CoolMS\CoreApp\Config\ConfigWriterInterface;
 use InvalidArgumentException;
 
 use function array_key_exists;

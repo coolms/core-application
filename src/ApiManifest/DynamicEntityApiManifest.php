@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreModule\ApiManifest;
+namespace CoolMS\CoreApp\ApiManifest;
 
 final readonly class DynamicEntityApiManifest
 {

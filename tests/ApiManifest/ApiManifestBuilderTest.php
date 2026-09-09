@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreModule\Tests\ApiManifest;
+namespace CoolMS\CoreApp\Tests\ApiManifest;
 
 use CoolMS\Core\Config\PlatformDefaults;
 use CoolMS\Core\Config\SupportedLocalesProvider;
-use CoolMS\CoreModule\ApiManifest\ApiManifestBuilder;
+use CoolMS\CoreApp\ApiManifest\ApiManifestBuilder;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreModule\Json;
+namespace CoolMS\CoreApp\Json;
 
 use CoolMS\Core\Exception\JsoncDecodeException;
 

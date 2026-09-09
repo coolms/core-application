@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreModule\ChangeFeed;
+namespace CoolMS\CoreApp\ChangeFeed;
 
 use CoolMS\Core\Backup\TableBackupPortInterface;
 use CoolMS\Core\ChangeFeed\SyncApplyResult;
 use CoolMS\Core\ChangeFeed\SyncChangeDelta;
 use CoolMS\Core\ChangeFeed\SyncChangeOp;
 use CoolMS\Core\ChangeFeed\SyncRowSourceInterface;
-use CoolMS\CoreModule\Backup\BackupTableRegistry;
+use CoolMS\CoreApp\Backup\BackupTableRegistry;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 
 use function array_keys;
@@ -144,7 +144,7 @@ final readonly class SyncChangeApplier
     /**
      * Insert/replace `$rows`, holding back any self-referential columns the owning
      * contributor declared and re-applying them once every row is in place -- the same
-     * two-phase dance {@see \CoolMS\CoreModule\Backup\BackupReaderInterface::loadTableDeferring()}
+     * two-phase dance {@see \CoolMS\CoreApp\Backup\BackupReaderInterface::loadTableDeferring()}
      * runs on the restore path, for the same reason: a batch carrying a parent and its
      * child otherwise loses the link SILENTLY (the parent's delete-by-id fires SET NULL
      * or CASCADE at the child that was just inserted).

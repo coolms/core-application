@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreModule\Config;
+namespace CoolMS\CoreApp\Config;
 
 use InvalidArgumentException;
 use RuntimeException;

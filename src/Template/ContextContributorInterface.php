@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreModule\Template;
+namespace CoolMS\CoreApp\Template;
 
 use CoolMS\Core\Template\ContextContributorInterface as CoreContextContributorInterface;
 

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreModule\Channel;
+namespace CoolMS\CoreApp\Channel;
 
 use CoolMS\Core\Channel\ChannelConfigField;
 use CoolMS\Core\Channel\ConfigurableChannelInterface;

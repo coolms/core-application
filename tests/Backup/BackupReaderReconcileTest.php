@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace CoolMS\CoreModule\Tests\Backup;
+namespace CoolMS\CoreApp\Tests\Backup;
 
 use CoolMS\Core\Backup\BackupReaderInterface;
 use CoolMS\Core\Backup\TableBackupPortInterface;
-use CoolMS\CoreModule\Backup\BackupReader;
+use CoolMS\CoreApp\Backup\BackupReader;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
@@ -19,10 +19,10 @@ use function sprintf;
 use function sys_get_temp_dir;
 
 /**
- * @covers \CoolMS\CoreModule\Backup\BackupReaderInterface::reconcileTable
- * @covers \CoolMS\CoreModule\Backup\BackupReaderInterface::reconcileCompositeTable
- * @covers \CoolMS\CoreModule\Backup\BackupReaderInterface::reconcileTableWithinGroups
- * @covers \CoolMS\CoreModule\Backup\BackupReaderInterface::liveValues
+ * @covers \CoolMS\CoreApp\Backup\BackupReaderInterface::reconcileTable
+ * @covers \CoolMS\CoreApp\Backup\BackupReaderInterface::reconcileCompositeTable
+ * @covers \CoolMS\CoreApp\Backup\BackupReaderInterface::reconcileTableWithinGroups
+ * @covers \CoolMS\CoreApp\Backup\BackupReaderInterface::liveValues
  */
 final class BackupReaderReconcileTest extends TestCase
 {
