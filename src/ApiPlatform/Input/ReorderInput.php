@@ -44,15 +44,3 @@ final readonly class ReorderInput
         );
     }
 }
-
-final readonly class ReorderInputItem
-{
-    public function __construct(
-        #[Assert\NotBlank]
-        #[Assert\Uuid]
-        public string $id = '',
-        #[Assert\GreaterThanOrEqual(0)]
-        public int $sortOrder = 0,
-    ) {
-    }
-}
