@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace CoolMS\Core\Application\Tests\ApiManifest;
 
+use CoolMS\Core\Application\ApiManifest\ApiManifestBuilder;
 use CoolMS\Core\Config\PlatformDefaults;
 use CoolMS\Core\Config\SupportedLocalesProvider;
-use CoolMS\Core\Application\ApiManifest\ApiManifestBuilder;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 

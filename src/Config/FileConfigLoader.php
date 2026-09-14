@@ -34,25 +34,6 @@ final readonly class FileConfigLoader implements ConfigLoaderInterface
     ) {
     }
 
-    /**
-     * Roots to scan, application FIRST.
-     *
-     * This loader returns the first match, so first means highest priority: an
-     * installation can override a definition a package ships by putting its own
-     * file in `config/modules`, and never the other way round.
-     *
-     * @return list<string>
-     */
-    private function roots(): array
-    {
-        $roots = [$this->configDir];
-        foreach ($this->moduleConfigDirs as $dir) {
-            $roots[] = $dir;
-        }
-
-        return $roots;
-    }
-
     public function load(string $type, string $id, ?string $themeSlug = null): ?array
     {
         $base = null;
@@ -92,6 +73,25 @@ final readonly class FileConfigLoader implements ConfigLoaderInterface
         }
 
         return null;
+    }
+
+    /**
+     * Roots to scan, application FIRST.
+     *
+     * This loader returns the first match, so first means highest priority: an
+     * installation can override a definition a package ships by putting its own
+     * file in `config/modules`, and never the other way round.
+     *
+     * @return list<string>
+     */
+    private function roots(): array
+    {
+        $roots = [$this->configDir];
+        foreach ($this->moduleConfigDirs as $dir) {
+            $roots[] = $dir;
+        }
+
+        return $roots;
     }
 
     /**

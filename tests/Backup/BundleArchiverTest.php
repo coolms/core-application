@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace CoolMS\Core\Application\Tests\Backup;
 
-use CoolMS\Core\Backup\BackupException;
 use CoolMS\Core\Application\Backup\BundleArchiver;
+use CoolMS\Core\Backup\BackupException;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;

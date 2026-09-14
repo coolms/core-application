@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace CoolMS\Core\Application\Dashboard;
 
-use CoolMS\Core\Dashboard\DashboardPlacement;
 use CoolMS\Core\Application\Config\ConfigWriterInterface;
+use CoolMS\Core\Dashboard\DashboardPlacement;
 use InvalidArgumentException;
 
 use function array_key_exists;

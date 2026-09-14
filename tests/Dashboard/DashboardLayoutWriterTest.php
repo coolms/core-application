@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace CoolMS\Core\Application\Tests\Dashboard;
 
-use CoolMS\Core\Dashboard\DashboardPlacement;
-use CoolMS\Core\Dashboard\DashboardWidget;
-use CoolMS\Core\Dashboard\DashboardWidgetProviderInterface;
 use CoolMS\Core\Application\Config\ConfigLoaderInterface;
 use CoolMS\Core\Application\Config\ConfigWriterInterface;
 use CoolMS\Core\Application\Dashboard\DashboardLayoutProvider;
 use CoolMS\Core\Application\Dashboard\DashboardLayoutWriter;
 use CoolMS\Core\Application\Dashboard\DashboardWidgetRegistry;
+use CoolMS\Core\Dashboard\DashboardPlacement;
+use CoolMS\Core\Dashboard\DashboardWidget;
+use CoolMS\Core\Dashboard\DashboardWidgetProviderInterface;
 use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;

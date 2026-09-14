@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace CoolMS\Core\Application\Dashboard;
 
+use CoolMS\Core\Application\Config\ConfigLoaderInterface;
 use CoolMS\Core\Dashboard\DashboardLayout;
 use CoolMS\Core\Dashboard\DashboardPlacement;
-use CoolMS\Core\Application\Config\ConfigLoaderInterface;
 use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace CoolMS\Core\Application\Tests\Translation;
 
+use CoolMS\Core\Application\Translation\LabelResolver;
 use CoolMS\Core\Translation\Translatable;
 use CoolMS\Core\Translation\TranslatableMisconfigurationException;
-use CoolMS\Core\Application\Translation\LabelResolver;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Contracts\Translation\TranslatorInterface;

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace CoolMS\Core\Application\Tests\Outbox;
 
+use CoolMS\Core\Application\Outbox\OutboxMaintenanceService;
 use CoolMS\Core\Inbox\ProcessedMessageStoreInterface;
 use CoolMS\Core\Outbox\OutboxRelayRepositoryInterface;
-use CoolMS\Core\Application\Outbox\OutboxMaintenanceService;
 use DateTimeImmutable;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;

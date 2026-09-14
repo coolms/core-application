@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace CoolMS\Core\Application\Tests\Option;
 
+use CoolMS\Core\Application\Option\OptionSourceRegistry;
 use CoolMS\Core\Option\Exception\UnknownOptionSourceException;
 use CoolMS\Core\Option\Option;
 use CoolMS\Core\Option\OptionSourceProviderInterface;
 use CoolMS\Core\Option\PublicOptionSourceInterface;
-use CoolMS\Core\Application\Option\OptionSourceRegistry;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
