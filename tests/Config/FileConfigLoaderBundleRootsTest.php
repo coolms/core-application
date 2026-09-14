@@ -20,14 +20,6 @@ final class FileConfigLoaderBundleRootsTest extends TestCase
     /** @var list<string> */
     private array $temp = [];
 
-    protected function tearDown(): void
-    {
-        foreach ($this->temp as $dir) {
-            $this->rmrf($dir);
-        }
-        $this->temp = [];
-    }
-
     public function testAPackageShippedConfigIsFound(): void
     {
         $app = $this->makeConfigDir([]);
@@ -77,6 +69,14 @@ final class FileConfigLoaderBundleRootsTest extends TestCase
             'locate() answers "where does an edit go", and an edit must never be '
             . 'written into a package: composer would discard it on the next update.',
         );
+    }
+
+    protected function tearDown(): void
+    {
+        foreach ($this->temp as $dir) {
+            $this->rmrf($dir);
+        }
+        $this->temp = [];
     }
 
     /** @param array<string, string> $files path under modules/ => contents */

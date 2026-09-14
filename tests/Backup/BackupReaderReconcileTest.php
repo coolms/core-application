@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace CoolMS\Core\Application\Tests\Backup;
 
+use CoolMS\Core\Application\Backup\BackupReader;
 use CoolMS\Core\Backup\BackupReaderInterface;
 use CoolMS\Core\Backup\TableBackupPortInterface;
-use CoolMS\Core\Application\Backup\BackupReader;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;

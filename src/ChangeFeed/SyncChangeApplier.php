@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace CoolMS\Core\Application\ChangeFeed;
 
+use CoolMS\Core\Application\Backup\BackupTableRegistry;
 use CoolMS\Core\Backup\TableBackupPortInterface;
 use CoolMS\Core\ChangeFeed\SyncApplyResult;
 use CoolMS\Core\ChangeFeed\SyncChangeDelta;
 use CoolMS\Core\ChangeFeed\SyncChangeOp;
 use CoolMS\Core\ChangeFeed\SyncRowSourceInterface;
-use CoolMS\Core\Application\Backup\BackupTableRegistry;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 
 use function array_keys;

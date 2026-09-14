@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace CoolMS\Core\Application\Tests\Retention;
 
-use CoolMS\Core\Retention\RetentionPrunerInterface;
 use CoolMS\Core\Application\Retention\RetentionPruneRunner;
+use CoolMS\Core\Retention\RetentionPrunerInterface;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 

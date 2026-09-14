@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace CoolMS\Core\Application\Tests\Retention;
 
-use CoolMS\Core\Outbox\OutboxRelayRepositoryInterface;
 use CoolMS\Core\Application\Retention\OutboxRecordRetentionPruner;
+use CoolMS\Core\Outbox\OutboxRelayRepositoryInterface;
 use DateTimeImmutable;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;

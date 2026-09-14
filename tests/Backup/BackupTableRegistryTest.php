@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace CoolMS\Core\Application\Tests\Backup;
 
+use CoolMS\Core\Application\Backup\BackupTableRegistry;
 use CoolMS\Core\Backup\BackupContributorInterface;
 use CoolMS\Core\Backup\DefersRestoreColumnsInterface;
-use CoolMS\Core\Application\Backup\BackupTableRegistry;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 

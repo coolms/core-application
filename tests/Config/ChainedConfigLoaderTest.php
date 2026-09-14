@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace CoolMS\Core\Application\Tests\Config;
 
-use CoolMS\Core\Config\ConfigOverride;
-use CoolMS\Core\Config\ConfigOverrideRepositoryInterface;
 use CoolMS\Core\Application\Config\ChainedConfigLoader;
 use CoolMS\Core\Application\Config\FileConfigLoader;
+use CoolMS\Core\Config\ConfigOverride;
+use CoolMS\Core\Config\ConfigOverrideRepositoryInterface;
 use LogicException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
