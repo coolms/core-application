@@ -15,6 +15,10 @@
             "name": "Dmitry Popov"
         }
     ],
+    "support": {
+        "issues": "https://github.com/coolms/core-application/issues",
+        "source": "https://github.com/coolms/core-application"
+    },
     "require": {
         "php": "^8.5",
         "ext-mbstring": "*",
