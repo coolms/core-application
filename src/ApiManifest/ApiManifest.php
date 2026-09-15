@@ -35,7 +35,7 @@ final readonly class ApiManifest
         public ?object $domainExplorer = null,
         /** Editor toolbar contributor manifest -- see the editor module's manifest. */
         public ?object $editor = null,
-        /** F.7 viewer manifest -- see the document module's viewer manifest. */
+        /** Viewer manifest -- see the document module's viewer manifest. */
         public ?object $viewers = null,
     ) {
     }
