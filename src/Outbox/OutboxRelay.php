@@ -6,7 +6,11 @@ namespace CoolMS\Core\Application\Outbox;
 
 use CoolMS\Core\Outbox\OutboxPublisherInterface;
 use CoolMS\Core\Outbox\OutboxRelayRepositoryInterface;
+use CoolMS\Core\Outbox\RelayHeartbeat;
+use CoolMS\Core\Outbox\RelayHeartbeatInterface;
 use CoolMS\Core\Persistence\ManagerResetterInterface;
+use DateTimeImmutable;
+use Psr\Clock\ClockInterface;
 use Psr\Log\LoggerInterface;
 use Throwable;
 
@@ -28,6 +32,14 @@ use Throwable;
  * {@see ManagerResetterInterface} so the closed manager doesn't cascade
  * `EntityManagerClosed` into every later row of the batch -- broker-like per-message
  * isolation, in-process.
+ *
+ * **The relay records its own pass.** Every completed pass leaves a
+ * {@see RelayHeartbeat} -- when, the batch asked for, the rows published,
+ * zero included -- so a monitor can tell a relay that stopped from one with
+ * nothing to do; before this, the two read the same (an empty queue proves
+ * no consumer). A pass that fails before the claim leaves no beat, which is
+ * the right record of it. Both the store and the clock are optional so an
+ * application that wires neither keeps the relay it had.
  */
 final readonly class OutboxRelay
 {
@@ -36,6 +48,8 @@ final readonly class OutboxRelay
         private OutboxPublisherInterface $publisher,
         private ManagerResetterInterface $resetter,
         private LoggerInterface $logger,
+        private ?RelayHeartbeatInterface $heartbeat = null,
+        private ?ClockInterface $clock = null,
     ) {
     }
 
@@ -67,6 +81,9 @@ final readonly class OutboxRelay
                 $this->resetter->reset();
             }
         }
+
+        $now = $this->clock?->now() ?? new DateTimeImmutable();
+        $this->heartbeat?->beat(new RelayHeartbeat($now, $batchSize, $published));
 
         return $published;
     }
