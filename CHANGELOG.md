@@ -13,6 +13,15 @@ same commit as the change it describes.
 ## Unreleased
 
 ### Added
+- `Health\LivenessRunner`: collects every `CoolMS\Core\Health\LivenessProbeInterface`
+  (tag `coolms.diagnostics.probe`) and returns their states, failing ones first,
+  with the count of required dependencies that were asked and stayed silent --
+  the number that should be zero.
+  A probe that throws is caught and reported as a failing row naming the
+  exception, so one broken probe never blinds an operator to the others, and the
+  fault is attributed to the probe rather than silently to the dependency.
+
+### Added
 
 - Declares `support` -- `issues` and `source` -- so a page imported from this
   package, and the catalogue, know where a correction is filed. Packagist filled
