@@ -13,6 +13,10 @@ same commit as the change it describes.
 ## Unreleased
 
 ### Added
+- `ApiManifest::$ui`: the host contracts in force -- the active theme's
+  declaration and the module entries matched against it, what a host mounts.
+  A contributor's `ui` section reached the builder and was dropped before this
+  line, because the manifest carries only the sections it names.
 - `Outbox\OutboxRelay` records a heartbeat after every completed pass through an
   optional `CoolMS\Core\Outbox\RelayHeartbeatInterface` (and an optional clock
   for its timestamp): the batch asked for and the rows published, an empty pass
