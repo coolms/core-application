@@ -16,7 +16,7 @@ use function array_column;
 /**
  * The number that should be zero, and the ways it could lie.
  *
- * The command exists because Centrifugo was dead for nine hours behind green gates,
+ * The command exists because a realtime node was dead for nine hours behind green gates,
  * so the failure mode to guard against is not "reports a fault that is not there" but
  * "reports health it has not established".
  */
@@ -27,7 +27,7 @@ final class LivenessRunnerTest extends TestCase
     {
         $runner = $this->runner(
             $this->probe(DependencyState::answered('Database', 'SELECT 1', 'ok')),
-            $this->probe(DependencyState::silent('Centrifugo', 'publish', 'no reply')),
+            $this->probe(DependencyState::silent('Realtime', 'publish', 'no reply')),
             // Optional and down -- a real problem, but not THE number.
             $this->probe(DependencyState::silent('Search index', 'GET /health', 'refused', required: false)),
             // Required but absent -- nothing was asked, so nothing stayed silent.
@@ -85,7 +85,7 @@ final class LivenessRunnerTest extends TestCase
         // The whole point: a dependency can be configured, wired and compiled, and
         // still be a corpse. The two facts are carried separately so no reader can
         // take one for the other.
-        $down = DependencyState::silent('Centrifugo', 'publish', 'no reply');
+        $down = DependencyState::silent('Realtime', 'publish', 'no reply');
 
         self::assertTrue($down->configured);
         self::assertFalse($down->answered);
