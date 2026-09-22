@@ -13,6 +13,10 @@ same commit as the change it describes.
 ## Unreleased
 
 ### Removed
+- `ChangeFeed\SyncChangeApplier` and `ChangeFeed\SyncBlobRegistry`: they
+  apply and serve what a change feed holds, and the feed's rows are an
+  installation's. The two declarations a module makes to a feed stay in
+  `coolms/core`.
 - `Outbox\OutboxRelay`, `Outbox\OutboxMaintenanceService` and the two
   retention pruners for the outbox and the processed-message journal: they
   drive tables, and a table belongs to whatever installs it, not to the
