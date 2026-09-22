@@ -12,6 +12,17 @@ same commit as the change it describes.
 
 ## Unreleased
 
+### Removed
+- `Outbox\OutboxRelay`, `Outbox\OutboxMaintenanceService` and the two
+  retention pruners for the outbox and the processed-message journal: they
+  drive tables, and a table belongs to whatever installs it, not to the
+  platform's orchestration layer.
+
+### Changed
+- `Outbox\IdempotentRunner` is now `Messaging\IdempotentRunner`, over the
+  platform's `Messaging\ProcessedMessageStoreInterface`. It orchestrates and
+  writes nothing itself, which is why it stays.
+
 ### Added
 - `ApiManifest::$ui`: the host contracts in force -- the active theme's
   declaration and the module entries matched against it, what a host mounts.
