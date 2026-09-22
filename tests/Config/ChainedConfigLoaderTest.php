@@ -6,19 +6,20 @@ namespace CoolMS\Core\Application\Tests\Config;
 
 use CoolMS\Core\Application\Config\ChainedConfigLoader;
 use CoolMS\Core\Application\Config\FileConfigLoader;
-use CoolMS\Core\Config\ConfigOverride;
-use CoolMS\Core\Config\ConfigOverrideRepositoryInterface;
-use LogicException;
+use CoolMS\Core\Config\ConfigOverrideReaderInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
+use ReflectionClass;
+use ReflectionMethod;
 
+use function array_map;
 use function sys_get_temp_dir;
 use function uniqid;
 
 /**
- * Reading config with the database layered over the files.
+ * Reading config with the stored overrides layered over the files.
  *
  * Without this the write path is a no-op nobody notices until production: an
  * edit saved to the database on a read-only host would never be read back, and
@@ -30,7 +31,7 @@ final class ChainedConfigLoaderTest extends TestCase
     #[Test]
     public function aStoredOverrideWins(): void
     {
-        $loader = $this->loader(new ConfigOverride('dashboard', 'main', ['type' => 'dashboard', 'widgets' => ['saved']]));
+        $loader = $this->loader(['type' => 'dashboard', 'widgets' => ['saved']]);
 
         self::assertSame(['type' => 'dashboard', 'widgets' => ['saved']], $loader->load('dashboard', 'main'));
     }
@@ -39,6 +40,11 @@ final class ChainedConfigLoaderTest extends TestCase
      * The normal case, and the one that matters for every existing consumer:
      * until something writes an override, this behaves exactly like the file
      * loader it replaced as `ConfigLoaderInterface`.
+     *
+     * !! The unmigrated-database case is NOT tested here -- it lives with the
+     * catch in whichever module implements the port, the only layer allowed to
+     * name a persistence exception. From here that case is simply "the port
+     * returned null", which is this test.
      */
     #[Test]
     public function withNoOverrideItFallsThroughToTheFiles(): void
@@ -49,42 +55,29 @@ final class ChainedConfigLoaderTest extends TestCase
     }
 
     /**
-     * Reading must never write, however the store behaves. Cheap to assert and
-     * worth having: a loader that upserted a "default" row on first read would
-     * quietly turn a shipped file into a database row on every fresh install,
-     * and nothing about the screen would look different.
-     *
-     * !! The unmigrated-database case is NOT tested here any more -- it moved
-     * with the catch into `ConfigOverrideRepository`, which is the only layer
-     * allowed to name an ORM exception. From here that case is simply
-     * "the port returned null", covered by the test above.
+     * The port the platform holds can only READ. Worth asserting as a shape
+     * rather than as behaviour: a loader given a store it could write through
+     * is one refactor away from upserting a "default" row on first read, which
+     * would quietly turn a shipped file into a stored row on every fresh
+     * install with nothing about the screen looking different.
      */
     #[Test]
-    public function readingNeverWrites(): void
+    public function theReadPortOffersNoWayToWrite(): void
     {
-        $repository = new class implements ConfigOverrideRepositoryInterface {
-            public function findOverride(string $type, string $id): ?ConfigOverride
-            {
-                return null;
-            }
+        $port = new ReflectionClass(ConfigOverrideReaderInterface::class);
 
-            public function upsert(string $type, string $id, array $data): ConfigOverride
-            {
-                throw new LogicException('The loader must never write.');
-            }
-
-            public function deleteOverride(string $type, string $id): bool
-            {
-                throw new LogicException('The loader must never write.');
-            }
-        };
-
-        self::assertNull(new ChainedConfigLoader($this->files(), $repository)->load('dashboard', 'main'));
+        self::assertSame(
+            ['findOverrideData'],
+            array_map(static fn (ReflectionMethod $m): string => $m->getName(), $port->getMethods()),
+        );
     }
 
-    private function loader(?ConfigOverride $override): ChainedConfigLoader
+    /**
+     * @param array<string, mixed>|null $override
+     */
+    private function loader(?array $override): ChainedConfigLoader
     {
-        return new ChainedConfigLoader($this->files(), $this->repository($override));
+        return new ChainedConfigLoader($this->files(), $this->overrides($override));
     }
 
     private function files(): FileConfigLoader
@@ -92,26 +85,22 @@ final class ChainedConfigLoaderTest extends TestCase
         return new FileConfigLoader(sys_get_temp_dir() . '/coolms-config-' . uniqid(), new NullLogger());
     }
 
-    private function repository(?ConfigOverride $override): ConfigOverrideRepositoryInterface
+    /**
+     * @param array<string, mixed>|null $override
+     */
+    private function overrides(?array $override): ConfigOverrideReaderInterface
     {
-        return new class($override) implements ConfigOverrideRepositoryInterface {
-            public function __construct(private readonly ?ConfigOverride $override)
+        return new class($override) implements ConfigOverrideReaderInterface {
+            /**
+             * @param array<string, mixed>|null $override
+             */
+            public function __construct(private readonly ?array $override)
             {
             }
 
-            public function findOverride(string $type, string $id): ?ConfigOverride
+            public function findOverrideData(string $type, string $id): ?array
             {
                 return $this->override;
-            }
-
-            public function upsert(string $type, string $id, array $data): ConfigOverride
-            {
-                return new ConfigOverride($type, $id, $data);
-            }
-
-            public function deleteOverride(string $type, string $id): bool
-            {
-                return false;
             }
         };
     }
