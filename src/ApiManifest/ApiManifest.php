@@ -37,6 +37,12 @@ final readonly class ApiManifest
         public ?object $editor = null,
         /** Viewer manifest -- see the document module's viewer manifest. */
         public ?object $viewers = null,
+        /**
+         * The host contracts in force: the active theme's declaration and
+         * the module entries matched against it -- what a host mounts. See
+         * core-bundle's `Ui\UiApiManifest`.
+         */
+        public ?object $ui = null,
     ) {
     }
 }

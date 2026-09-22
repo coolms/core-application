@@ -83,6 +83,7 @@ final class ApiManifestBuilder
             domainExplorer: $sections['domainExplorer'] ?? null,
             editor: $sections['editor'] ?? null,
             viewers: $sections['viewers'] ?? null,
+            ui: $sections['ui'] ?? null,
         );
     }
 }
