@@ -13,6 +13,13 @@ same commit as the change it describes.
 ## Unreleased
 
 ### Removed
+- The backup ENGINE: `Backup\BackupRunner`, `Backup\BackupWriter`,
+  `Backup\BackupReader`, `Backup\BundleArchiver`, `Backup\BackupTableRegistry`
+  and `Backup\ContributorRestoreOrder`, with their four tests. It writes bundle
+  files and restores rows into every module's tables, which makes it a
+  module's to own. The contracts stay in `coolms/core`, now including the three
+  ports a feature asks a bundle through, so the sync surface can produce a
+  snapshot without depending on the module that answers.
 - `Config\FileConfigWriter`, `Config\DbConfigWriter` and
   `Config\ChainedConfigWriter`: the write half of the config store. It wrote
   YAML into the application's `config/modules/generated` and rows into a table
