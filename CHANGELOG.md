@@ -13,6 +13,16 @@ same commit as the change it describes.
 ## Unreleased
 
 ### Removed
+- `Config\FileConfigWriter`, `Config\DbConfigWriter` and
+  `Config\ChainedConfigWriter`: the write half of the config store. It wrote
+  YAML into the application's `config/modules/generated` and rows into a table
+  the platform installed, for data only a module ever saves. The port
+  (`Config\ConfigWriterInterface`) stays; the stores are the Settings
+  module's.
+- `Config\ChainedConfigLoader` now reads through
+  `CoolMS\Core\Config\ConfigOverrideReaderInterface` and gets the stored
+  config array back, instead of an entity from a repository port. Same
+  precedence, same fall-through to the files.
 - `ChangeFeed\SyncChangeApplier` and `ChangeFeed\SyncBlobRegistry`: they
   apply and serve what a change feed holds, and the feed's rows are an
   installation's. The two declarations a module makes to a feed stay in
@@ -28,6 +38,11 @@ same commit as the change it describes.
   writes nothing itself, which is why it stays.
 
 ### Added
+- `Config\ReadOnlyConfigWriter` and `Config\NoConfigOverrides`: what the
+  platform answers with when no module owns a config store -- a save that
+  refuses out loud rather than reporting a write that went nowhere, and a
+  reader that never finds a row. Aliased by `coolms/core-bundle`'s
+  `ConfigStoreFallbackPass` only when nothing else has claimed the ports.
 - `ApiManifest::$ui`: the host contracts in force -- the active theme's
   declaration and the module entries matched against it, what a host mounts.
   A contributor's `ui` section reached the builder and was dropped before this
