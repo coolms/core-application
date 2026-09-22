@@ -13,6 +13,12 @@ same commit as the change it describes.
 ## Unreleased
 
 ### Added
+- `Outbox\OutboxRelay` records a heartbeat after every completed pass through an
+  optional `CoolMS\Core\Outbox\RelayHeartbeatInterface` (and an optional clock
+  for its timestamp): the batch asked for and the rows published, an empty pass
+  included. A pass whose claim fails leaves no beat, which is the right record
+  of it. Both arguments default to null, so an application that wires neither
+  keeps the relay it had.
 - `Health\LivenessRunner`: collects every `CoolMS\Core\Health\LivenessProbeInterface`
   (tag `coolms.diagnostics.probe`) and returns their states, failing ones first,
   with the count of required dependencies that were asked and stayed silent --
