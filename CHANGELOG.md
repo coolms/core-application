@@ -12,6 +12,14 @@ same commit as the change it describes.
 
 ## Unreleased
 
+### Added
+
+- `RetentionPruneRunner::preview()` gives each pruner's `population` alongside
+  its `prunable` count: the number from `countPopulation()` when the pruner
+  implements `coolms/core`'s `RetentionPopulationInterface`, and null -- unknown,
+  never zero -- when it does not. Requires the `coolms/core` that ships the
+  interface.
+
 ### Removed
 - The backup ENGINE: `Backup\BackupRunner`, `Backup\BackupWriter`,
   `Backup\BackupReader`, `Backup\BundleArchiver`, `Backup\BackupTableRegistry`

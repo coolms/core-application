@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CoolMS\Core\Application\Retention;
 
+use CoolMS\Core\Retention\RetentionPopulationInterface;
 use CoolMS\Core\Retention\RetentionPrunerInterface;
 use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 
@@ -50,9 +51,11 @@ final readonly class RetentionPruneRunner
 
     /**
      * How many rows each registered pruner WOULD remove, without deleting
-     * anything -- the dry-run preview.
+     * anything -- the dry-run preview -- and out of how many: the population
+     * when the pruner can count it ({@see RetentionPopulationInterface}), null
+     * when it cannot. Null is "unknown", never zero.
      *
-     * @return list<array{key: string, label: string, prunable: int}>
+     * @return list<array{key: string, label: string, prunable: int, population: int|null}>
      */
     public function preview(): array
     {
@@ -62,6 +65,7 @@ final readonly class RetentionPruneRunner
                 'key' => $pruner->retentionKey(),
                 'label' => $pruner->retentionLabel(),
                 'prunable' => $pruner->countExpired(),
+                'population' => $pruner instanceof RetentionPopulationInterface ? $pruner->countPopulation() : null,
             ];
         }
 
