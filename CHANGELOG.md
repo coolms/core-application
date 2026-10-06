@@ -10,7 +10,7 @@ major number means here.
 history when this file was created. Every entry after that is written in the
 same commit as the change it describes.
 
-## Unreleased
+## 2.0.0-alpha3 - 2026-10-07
 
 ### Removed
 - The backup ENGINE: `Backup\BackupRunner`, `Backup\BackupWriter`,
