@@ -8,6 +8,8 @@ use CoolMS\Core\Application\Config\ConfigLoaderInterface;
 use CoolMS\Core\Application\Dashboard\DashboardCatalogue;
 use CoolMS\Core\Application\Dashboard\DashboardLayoutProvider;
 use CoolMS\Core\Application\Dashboard\DashboardWidgetRegistry;
+use CoolMS\Core\Application\Dashboard\NoPersonalDashboardLayouts;
+use CoolMS\Core\Application\Dashboard\PersonalDashboardLayoutsInterface;
 use CoolMS\Core\Dashboard\DashboardWidget;
 use CoolMS\Core\Dashboard\DashboardWidgetProviderInterface;
 use CoolMS\Core\Dashboard\PlacedWidget;
@@ -86,11 +88,54 @@ final class DashboardCatalogueTest extends TestCase
         self::assertSame(['main', 'content'], $loader->asked);
     }
 
+    /** The person's own arrangement decides the order and widths they see. */
+    #[Test]
+    public function thePersonsOwnArrangementIsWhatTheySee(): void
+    {
+        $personal = new InMemoryPersonalDashboardLayouts(['main' => [['widget' => 'b', 'columns' => 6]]]);
+
+        $placed = $this->catalogue(['a' => null, 'b' => null], null, $personal)->forCurrentUser();
+
+        self::assertSame(['b', 'a'], $this->ids($placed));
+        self::assertSame(6, $placed[0]->widget->columns);
+    }
+
+    /**
+     * !! A widget a module adds AFTER the person arranged their dashboard still
+     * appears -- appended, in catalogue order. An arrangement says what to
+     * change, never "only these", or installing a module would show nothing.
+     */
+    #[Test]
+    public function aWidgetAddedAfterThePersonArrangedStillAppears(): void
+    {
+        $personal = new InMemoryPersonalDashboardLayouts(['main' => [['widget' => 'b'], ['widget' => 'a']]]);
+
+        $placed = $this->catalogue(['a' => null, 'b' => null, 'new.widget' => null], null, $personal)
+            ->forCurrentUser();
+
+        self::assertSame(['b', 'a', 'new.widget'], $this->ids($placed));
+    }
+
+    #[Test]
+    public function theVersionAndWhetherArrangingIsPossibleComeFromThePersonsStore(): void
+    {
+        $arrangeable = $this->catalogue([], null, new InMemoryPersonalDashboardLayouts());
+        $none = $this->catalogue([]);
+
+        self::assertSame('v1', $arrangeable->versionForCurrentUser());
+        self::assertTrue($arrangeable->canArrange());
+        self::assertFalse($none->canArrange());
+    }
+
     /**
      * @param array<string, string|null> $groups widget id to its group
      */
-    private function catalogue(array $groups, ?RecordingConfigLoader $loader = null): DashboardCatalogue
-    {
+    private function catalogue(
+        array $groups,
+        ?RecordingConfigLoader $loader = null,
+        ?PersonalDashboardLayoutsInterface $personal = null,
+    ): DashboardCatalogue {
+        $personal ??= new NoPersonalDashboardLayouts();
         $widgets = [];
         foreach ($groups as $id => $group) {
             $widgets[] = new DashboardWidget(
@@ -124,7 +169,8 @@ final class DashboardCatalogueTest extends TestCase
 
         return new DashboardCatalogue(
             $registry,
-            new DashboardLayoutProvider($loader ?? new RecordingConfigLoader(), new NullLogger()),
+            new DashboardLayoutProvider($loader ?? new RecordingConfigLoader(), new NullLogger(), $personal),
+            $personal,
         );
     }
 

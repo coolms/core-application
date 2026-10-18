@@ -10,6 +10,31 @@ Versioning is described in the [CoolMS contributing guide](https://github.com/co
 history when this file was created. Every entry after that is written in the
 same commit as the change it describes.
 
+## Unreleased
+
+### Added
+- `Dashboard\PersonalDashboardLayoutsInterface`: where each person's own
+  dashboard arrangements are kept, answered by the host, with one version for
+  all of a person's dashboards (`version()` is read before `entries()`), and
+  `StaleDashboardLayoutsException` / `DashboardArrangingUnavailableException`
+  for a save from an older version and for a host that keeps none.
+- `Dashboard\NoPersonalDashboardLayouts`: the answer for a host without a
+  per-person store -- every dashboard is the module default and a save is
+  refused.
+- `DashboardCatalogue::versionForCurrentUser()` and `canArrange()`.
+
+### Changed
+- `DashboardLayoutWriter` saves the signed-in person's arrangement through the
+  port, against an optional expected version, and returns the version written;
+  it no longer takes a `ConfigWriterInterface` and never writes config.
+  `reset()` drops the person's arrangement the same way. A dashboard id must be
+  a plain token (`PersonalDashboardLayoutsInterface::DASHBOARD_ID_PATTERN`).
+- `DashboardLayoutProvider` draws the person's own arrangement when they have
+  one, else the module default read from config (`moduleDefault()`), never a
+  merge of the two; a bad stored entry is dropped and logged like a bad YAML
+  line. Its constructor takes the port.
+- `DashboardCatalogue`'s constructor takes the port.
+
 ## 2.0.0-alpha3 - 2026-10-07
 
 ### Removed

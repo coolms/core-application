@@ -10,7 +10,8 @@ use function in_array;
 
 /**
  * The dashboard as it should be drawn: what this viewer may see, arranged the
- * way config says, for the main dashboard or for one section.
+ * way they arranged it (else the module default), for the main dashboard or for
+ * one section.
  *
  * Two steps that must stay in this order. The registry decides WHETHER a widget
  * is offered -- a question about the viewer -- and the layout decides only where
@@ -34,7 +35,26 @@ final readonly class DashboardCatalogue
     public function __construct(
         private DashboardWidgetRegistry $widgets,
         private DashboardLayoutProvider $layouts,
+        private PersonalDashboardLayoutsInterface $personal,
     ) {
+    }
+
+    /**
+     * The version of this viewer's arrangements, for an ETag.
+     *
+     * !! Ask for it BEFORE {@see forCurrentUser()}: a save landing between the
+     * two reads then leaves the version older than what was drawn, and the
+     * next save is refused rather than let through over it.
+     */
+    public function versionForCurrentUser(): string
+    {
+        return $this->personal->version();
+    }
+
+    /** Whether this viewer can arrange a dashboard here at all -- a client draws "Arrange" only when it is true. */
+    public function canArrange(): bool
+    {
+        return $this->personal->canArrange();
     }
 
     /**
