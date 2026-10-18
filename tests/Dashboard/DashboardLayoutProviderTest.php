@@ -6,6 +6,9 @@ namespace CoolMS\Core\Application\Tests\Dashboard;
 
 use CoolMS\Core\Application\Config\ConfigLoaderInterface;
 use CoolMS\Core\Application\Dashboard\DashboardLayoutProvider;
+use CoolMS\Core\Application\Dashboard\NoPersonalDashboardLayouts;
+use CoolMS\Core\Application\Dashboard\PersonalDashboardLayoutsInterface;
+use CoolMS\Core\Dashboard\DashboardPlacement;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\TestWith;
@@ -40,7 +43,7 @@ final class DashboardLayoutProviderTest extends TestCase
 
         self::assertSame(
             ['vfs.storage-used', 'vfs.file-count', 'other.thing'],
-            array_map(static fn ($p): string => $p->widget, $layout->placements),
+            array_map(static fn (DashboardPlacement $p): string => $p->widget, $layout->placements),
         );
         self::assertSame(6, $layout->placements[0]->columns);
         // Omitted rather than defaulted: null is "keep the module's width",
@@ -81,7 +84,7 @@ final class DashboardLayoutProviderTest extends TestCase
             }
         };
 
-        $provider = new DashboardLayoutProvider($loader, new NullTestLogger());
+        $provider = new DashboardLayoutProvider($loader, new NullTestLogger(), new NoPersonalDashboardLayouts());
         $provider->load();
         $provider->load('sales');
 
@@ -121,9 +124,64 @@ final class DashboardLayoutProviderTest extends TestCase
         self::assertTrue($this->provider(['widgets' => 'vfs.file-count'])->load()->isEmpty());
     }
 
-    /** @param array<string, mixed>|null $raw */
-    private function provider(?array $raw, ?NullTestLogger $logger = null): DashboardLayoutProvider
+    /**
+     * !! The person's own arrangement is drawn INSTEAD of the module default,
+     * never merged into it: what someone arranged must not change when a file
+     * they cannot see is edited.
+     */
+    #[Test]
+    public function aPersonalArrangementIsDrawnInsteadOfTheModuleDefault(): void
     {
+        $personal = new InMemoryPersonalDashboardLayouts(['main' => [['widget' => 'mine', 'columns' => 4]]]);
+        $default = ['widgets' => [['widget' => 'theirs', 'columns' => 6], ['widget' => 'mine', 'hidden' => true]]];
+
+        $layout = $this->provider($default, null, $personal)->load();
+
+        self::assertCount(1, $layout->placements);
+        self::assertSame('mine', $layout->placements[0]->widget);
+        self::assertSame(4, $layout->placements[0]->columns);
+        self::assertFalse($layout->placements[0]->hidden);
+    }
+
+    /** Arranging one dashboard does not take another off its module default. */
+    #[Test]
+    public function aDashboardThePersonNeverArrangedIsTheModuleDefault(): void
+    {
+        $personal = new InMemoryPersonalDashboardLayouts(['content' => [['widget' => 'mine']]]);
+
+        $provider = $this->provider(['widgets' => [['widget' => 'theirs', 'columns' => 6]]], null, $personal);
+
+        self::assertNull($provider->personal());
+        self::assertSame('theirs', $provider->load()->placements[0]->widget);
+        self::assertSame('mine', $provider->load('content')->placements[0]->widget);
+    }
+
+    /** What a client once stored is as untrusted as a hand-edited file: one bad entry costs one card. */
+    #[Test]
+    public function aBadPersonalEntryIsDroppedAndLogged(): void
+    {
+        $logger = new NullTestLogger();
+        $personal = new InMemoryPersonalDashboardLayouts(['main' => [
+            ['widget' => 'a', 'columns' => 99],
+            ['widget' => 'b'],
+        ]]);
+
+        $layout = $this->provider(null, $logger, $personal)->load();
+
+        $drawn = array_map(static fn (DashboardPlacement $p): string => $p->widget, $layout->placements);
+        self::assertSame(['b'], $drawn);
+        self::assertCount(1, $logger->warnings);
+        self::assertStringContainsString('main (personal)', $logger->warnings[0]);
+    }
+
+    /**
+     * @param array<string, mixed>|null $raw
+     */
+    private function provider(
+        ?array $raw,
+        ?NullTestLogger $logger = null,
+        ?PersonalDashboardLayoutsInterface $personal = null,
+    ): DashboardLayoutProvider {
         return new DashboardLayoutProvider(
             new class($raw) implements ConfigLoaderInterface {
                 /** @param array<string, mixed>|null $raw */
@@ -137,6 +195,7 @@ final class DashboardLayoutProviderTest extends TestCase
                 }
             },
             $logger ?? new NullTestLogger(),
+            $personal ?? new NoPersonalDashboardLayouts(),
         );
     }
 }
