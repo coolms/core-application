@@ -33,7 +33,7 @@ final class NoPersonalDashboardLayoutsTest extends TestCase
     {
         $this->expectException(DashboardArrangingUnavailableException::class);
 
-        (new NoPersonalDashboardLayouts())->save('main', [['widget' => 'a']], null);
+        new NoPersonalDashboardLayouts()->save('main', [['widget' => 'a']], null);
     }
 
     #[Test]
@@ -41,6 +41,6 @@ final class NoPersonalDashboardLayoutsTest extends TestCase
     {
         $this->expectException(DashboardArrangingUnavailableException::class);
 
-        (new NoPersonalDashboardLayouts())->clear('main', null);
+        new NoPersonalDashboardLayouts()->clear('main', null);
     }
 }

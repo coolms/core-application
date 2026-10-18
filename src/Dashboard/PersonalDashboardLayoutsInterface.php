@@ -74,7 +74,7 @@ interface PersonalDashboardLayoutsInterface
      * @param string|null                $expectedVersion the version the arrangement was made from; null = a save
      *                                                    that names none (applied, and counted by the host)
      *
-     * @throws StaleDashboardLayoutsException          when $expectedVersion is not the current version
+     * @throws StaleDashboardLayoutsException         when $expectedVersion is not the current version
      * @throws DashboardArrangingUnavailableException when {@see canArrange()} is false
      *
      * @return string the version written
@@ -84,7 +84,7 @@ interface PersonalDashboardLayoutsInterface
     /**
      * Drop the person's arrangement of one dashboard, so the module default applies again.
      *
-     * @throws StaleDashboardLayoutsException          when $expectedVersion is not the current version
+     * @throws StaleDashboardLayoutsException         when $expectedVersion is not the current version
      * @throws DashboardArrangingUnavailableException when {@see canArrange()} is false
      *
      * @return string the version written

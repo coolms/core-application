@@ -51,9 +51,9 @@ final readonly class DashboardLayoutWriter
      * @param list<DashboardPlacement> $placements      in the order they should appear
      * @param string|null              $expectedVersion the version the arrangement was made from (If-Match)
      *
-     * @throws InvalidArgumentException                 when a placement names a widget this viewer is not
-     *                                                  offered, or the dashboard id is not a plain token
-     * @throws StaleDashboardLayoutsException          when the person's arrangements changed since that version
+     * @throws InvalidArgumentException               when a placement names a widget this viewer is not
+     *                                                offered, or the dashboard id is not a plain token
+     * @throws StaleDashboardLayoutsException         when the person's arrangements changed since that version
      * @throws DashboardArrangingUnavailableException when the installation keeps no personal arrangements
      *
      * @return string the version written
@@ -99,7 +99,7 @@ final readonly class DashboardLayoutWriter
         }
 
         $kept = [];
-        foreach ($this->layouts->personal($dashboard)?->placements ?? [] as $existing) {
+        foreach ($this->layouts->personal($dashboard)->placements ?? [] as $existing) {
             // Only what this viewer could not have been shown, and did not
             // resubmit -- anything they CAN see, they have just spoken for.
             if (!array_key_exists($existing->widget, $offered) && !array_key_exists($existing->widget, $submitted)) {
@@ -113,8 +113,8 @@ final readonly class DashboardLayoutWriter
     /**
      * Drop the person's arrangement so the module default applies again.
      *
-     * @throws InvalidArgumentException                 when the dashboard id is not a plain token
-     * @throws StaleDashboardLayoutsException          when the person's arrangements changed since that version
+     * @throws InvalidArgumentException               when the dashboard id is not a plain token
+     * @throws StaleDashboardLayoutsException         when the person's arrangements changed since that version
      * @throws DashboardArrangingUnavailableException when the installation keeps no personal arrangements
      *
      * @return string the version written
