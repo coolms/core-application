@@ -8,6 +8,7 @@ use CoolMS\Core\Dashboard\DashboardWidget;
 use CoolMS\Core\Dashboard\DashboardWidgetProviderInterface;
 use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Contracts\Service\ResetInterface;
 
 use function array_key_exists;
 use function in_array;
@@ -16,11 +17,17 @@ use function in_array;
  * Every {@see DashboardWidgetProviderInterface} collapsed into one catalogue,
  * filtered to what the current viewer may be offered.
  *
- * Cached for the registry's lifetime like {@see
- * the VFS file-kind registry} -- the providers are cheap and
- * the answer cannot change within a request.
+ * Cached for one request -- the providers are cheap and the answer cannot
+ * change within a request -- and forgotten between requests ({@see reset()}).
+ *
+ * !! The answer is per VIEWER: it is filtered by the viewer's roles. A cache
+ * kept for the registry's lifetime is right only where every request is a new
+ * process; in a long-running worker, or a test client that keeps its kernel,
+ * the first viewer's list would be handed to the next. Each widget's own
+ * endpoint still refuses data the viewer may not read, so the leak would be the
+ * catalogue, never the data -- but the catalogue is what this class promises.
  */
-final class DashboardWidgetRegistry
+final class DashboardWidgetRegistry implements ResetInterface
 {
     /** @var list<DashboardWidget>|null */
     private ?array $widgets = null;
@@ -85,5 +92,11 @@ final class DashboardWidgetRegistry
         }
 
         return $this->widgets = $out;
+    }
+
+    /** Forget the last viewer's catalogue: the kernel calls it between requests (`kernel.reset`). */
+    public function reset(): void
+    {
+        $this->widgets = null;
     }
 }

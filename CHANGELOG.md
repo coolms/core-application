@@ -35,6 +35,19 @@ same commit as the change it describes.
   line. Its constructor takes the port.
 - `DashboardCatalogue`'s constructor takes the port.
 
+### Fixed
+- `DashboardWidgetRegistry` forgets its catalogue between requests: it
+  implements Symfony's `ResetInterface`, so `kernel.reset` clears it. The
+  catalogue is filtered by the viewer's roles, and a cache kept for the
+  registry's lifetime handed the first viewer's list to the next wherever a
+  kernel serves more than one request (a long-running worker, a test client
+  that keeps its kernel). Each widget's own endpoint kept refusing data the
+  viewer may not read, so the catalogue was what leaked, never the data.
+  Requires `symfony/service-contracts` ^3.5, now declared. An application
+  that registers the service with autoconfiguration on gets the
+  `kernel.reset` tag by itself; one that defines it by hand with
+  autoconfiguration off adds the tag (`kernel.reset`, method `reset`).
+
 ## 2.0.0-alpha3 - 2026-10-07
 
 ### Removed
