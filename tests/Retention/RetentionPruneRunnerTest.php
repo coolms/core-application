@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CoolMS\Core\Application\Tests\Retention;
 
 use CoolMS\Core\Application\Retention\RetentionPruneRunner;
+use CoolMS\Core\Retention\RetentionPopulationInterface;
 use CoolMS\Core\Retention\RetentionPrunerInterface;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -40,9 +41,49 @@ final class RetentionPruneRunnerTest extends TestCase
         ]);
 
         self::assertSame([
-            ['key' => 'analytics.events', 'label' => 'Analytics', 'prunable' => 70],
-            ['key' => 'comment.spam', 'label' => 'Spam', 'prunable' => 30],
+            ['key' => 'analytics.events', 'label' => 'Analytics', 'prunable' => 70, 'population' => null],
+            ['key' => 'comment.spam', 'label' => 'Spam', 'prunable' => 30, 'population' => null],
         ], $runner->preview());
+    }
+
+    #[Test]
+    public function aPrunerThatCanCountGivesItsPopulationAndOneThatCannotGivesNull(): void
+    {
+        $counting = new class implements RetentionPrunerInterface, RetentionPopulationInterface {
+            public function retentionKey(): string
+            {
+                return 'search.queries';
+            }
+
+            public function retentionLabel(): string
+            {
+                return 'Searches';
+            }
+
+            public function pruneExpired(): int
+            {
+                return 0;
+            }
+
+            public function countExpired(): int
+            {
+                return 4;
+            }
+
+            public function countPopulation(): int
+            {
+                return 50;
+            }
+        };
+        $runner = new RetentionPruneRunner([
+            $counting,
+            $this->pruner('comment.spam', 'Spam', removed: 0, prunable: 3),
+        ]);
+
+        $preview = $runner->preview();
+
+        self::assertSame(50, $preview[0]['population']);
+        self::assertNull($preview[1]['population'], 'unknown, not zero');
     }
 
     #[Test]

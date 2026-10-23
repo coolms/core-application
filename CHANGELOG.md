@@ -10,6 +10,16 @@ Versioning is described in the [CoolMS contributing guide](https://github.com/co
 history when this file was created. Every entry after that is written in the
 same commit as the change it describes.
 
+## Unreleased
+
+### Added
+
+- `RetentionPruneRunner::preview()` gives each pruner's `population` alongside
+  its `prunable` count: the number from `countPopulation()` when the pruner
+  implements `coolms/core`'s `RetentionPopulationInterface`, and null -- unknown,
+  never zero -- when it does not. Requires the `coolms/core` that ships the
+  interface.
+
 ## 2.0.0-alpha4 - 2026-10-22
 
 ### Added
