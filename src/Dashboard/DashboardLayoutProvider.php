@@ -16,30 +16,34 @@ use function is_int;
 use function is_string;
 
 /**
- * Reads a saved dashboard arrangement out of config DATA.
+ * The arrangement a dashboard is drawn with: the person's own, else the module default.
  *
- * ## Through the platform's config loader, not `glob` + `Yaml::parseFile`
+ * ## Two sources, and only one of them is ever written
  *
- * The file lives at `config/modules/core/dashboard/dashboard.yaml` and is found
- * the way every datagrid, navigraph tree and editor profile is found: by `type`
- * and `id` through {@see ConfigLoaderInterface}. That is not merely tidier -- it
- * is the whole reason a read-only deployment can still have an editable
- * dashboard. The config seam is where "YAML when the directory is writable, the
- * database when it is not" belongs, ONCE, for every feature; a dashboard that
- * parsed its own file would have to grow its own copy of that fallback and
- * would be wrong on any host where the config directory is read-only.
+ * - The person's own arrangement, from {@see PersonalDashboardLayoutsInterface}:
+ *   what they saved, kept by the host with their other settings.
+ * - The module DEFAULT, from config DATA -- `config/modules/core/dashboard/dashboard.yaml`
+ *   for the main dashboard -- found the way every datagrid, navigraph tree and
+ *   editor profile is found: by `type` and `id` through
+ *   {@see ConfigLoaderInterface}. The application never writes it; it changes
+ *   with the code, in a commit.
+ *
+ * A person who arranged a dashboard sees their arrangement and nothing of the
+ * default's; one who never did sees the default. There is no merge between the
+ * two: a merge would make "my arrangement" depend on edits to a file the
+ * person cannot see.
  *
  * ## Everything here is UNTRUSTED, and that is deliberate
  *
- * A human edits this file. So a bad line is dropped and logged rather than
- * thrown, and the dashboard renders without it -- the opposite of {@see
- * DashboardPlacement}, which refuses to exist in a wrong state because a bad
- * width THERE is a programmer's mistake in a module's own code.
+ * A human edits the YAML, and the stored arrangement is whatever a client
+ * once sent. So a bad entry is dropped and logged rather than thrown, and the
+ * dashboard renders without it -- the opposite of {@see DashboardPlacement},
+ * which refuses to exist in a wrong state because a bad width THERE is a
+ * programmer's mistake in a module's own code.
  *
  * The two rules are not in tension, they are the layers doing their own jobs:
  * the value object guarantees it is never wrong, and this decides what to do
- * about input that is. A typo in a config file should cost one card, not the
- * page.
+ * about input that is. A typo should cost one card, not the page.
  */
 final readonly class DashboardLayoutProvider
 {
@@ -59,17 +63,31 @@ final readonly class DashboardLayoutProvider
     public function __construct(
         private ConfigLoaderInterface $config,
         private LoggerInterface $logger,
+        private PersonalDashboardLayoutsInterface $personal,
     ) {
     }
 
     /**
-     * The arrangement saved for one dashboard, or an empty layout.
+     * The arrangement this viewer sees for one dashboard, or an empty layout.
      *
-     * An empty layout is the normal case, not a failure: with no file the
-     * catalogue's own order stands, which is exactly what shipped before any of
-     * this existed.
+     * An empty layout is the normal case, not a failure: with nothing saved and
+     * no default declared, the catalogue's own order stands.
      */
     public function load(string $dashboard = self::MAIN): DashboardLayout
+    {
+        return $this->personal($dashboard) ?? $this->moduleDefault($dashboard);
+    }
+
+    /** The viewer's own arrangement of one dashboard, or null when they never arranged it. */
+    public function personal(string $dashboard = self::MAIN): ?DashboardLayout
+    {
+        $entries = $this->personal->entries($dashboard);
+
+        return null === $entries ? null : $this->layout($entries, $dashboard, 'personal');
+    }
+
+    /** What the modules declare for one dashboard, read from config and never written. */
+    public function moduleDefault(string $dashboard = self::MAIN): DashboardLayout
     {
         // !! No theme slug. The loader merges a theme override with
         // array_merge_recursive, which CONCATENATES lists -- it would append a
@@ -82,9 +100,15 @@ final readonly class DashboardLayoutProvider
             return DashboardLayout::none();
         }
 
+        return $this->layout($raw['widgets'], $dashboard, 'module default');
+    }
+
+    /** @param array<mixed> $entries */
+    private function layout(array $entries, string $dashboard, string $source): DashboardLayout
+    {
         $placements = [];
-        foreach ($raw['widgets'] as $index => $entry) {
-            $placement = $this->placement($entry, $dashboard, (string) $index);
+        foreach ($entries as $index => $entry) {
+            $placement = $this->placement($entry, $dashboard . ' (' . $source . ')', (string) $index);
             if (null !== $placement) {
                 $placements[] = $placement;
             }

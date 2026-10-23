@@ -128,6 +128,32 @@ final class DashboardWidgetRegistryTest extends TestCase
         self::assertSame(1, $calls);
     }
 
+    /**
+     * !! The catalogue is per VIEWER, and the kernel resets services between
+     * requests (`kernel.reset`). After a reset the next viewer is asked afresh;
+     * without one, the first viewer's filtered list would be handed on -- in a
+     * long-running worker, or a test client that keeps its kernel.
+     */
+    #[Test]
+    public function theNextViewerIsAskedAfreshAfterAReset(): void
+    {
+        $viewer = new SwitchableChecker(granted: false);
+        $registry = $this->registry([[
+            $this->widget('open'),
+            $this->widget('restricted', role: 'ROLE_ADMIN'),
+        ]], $viewer);
+
+        $first = $this->ids($registry);
+        $viewer->granted = true;
+        $unreset = $this->ids($registry);
+        $registry->reset();
+        $next = $this->ids($registry);
+
+        self::assertSame(['open'], $first);
+        self::assertSame(['open'], $unreset, 'within one request the answer is kept, as before');
+        self::assertSame(['open', 'restricted'], $next, 'after the reset, the next viewer\'s own catalogue');
+    }
+
     /** @param list<list<DashboardWidget>> $batches one per provider */
     private function registry(array $batches, ?AuthorizationCheckerInterface $authorization = null): DashboardWidgetRegistry
     {

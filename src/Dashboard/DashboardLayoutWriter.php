@@ -4,57 +4,70 @@ declare(strict_types=1);
 
 namespace CoolMS\Core\Application\Dashboard;
 
-use CoolMS\Core\Application\Config\ConfigWriterInterface;
 use CoolMS\Core\Dashboard\DashboardPlacement;
 use InvalidArgumentException;
 
 use function array_key_exists;
 use function implode;
+use function preg_match;
 use function sprintf;
 
 /**
- * Saves a dashboard arrangement.
+ * Saves the signed-in person's arrangement of a dashboard.
+ *
+ * ## Into the person's settings, never into config
+ *
+ * An arrangement is one person's runtime state. It goes to
+ * {@see PersonalDashboardLayoutsInterface}, under that person's version, and
+ * nowhere else: the module's YAML is the default and is never written by the
+ * application (it used to be -- every admin's drag became a diff in the served
+ * tree, and rearranged everyone else's dashboard with it).
  *
  * ## What a save may change, and what it cannot
  *
  * Order, width, hidden. Nothing else reaches storage: a placement carries a
  * widget ID and two numbers, so there is no shape in which a saved layout could
- * alter an `endpoint` or a `requiredRole`. That is deliberate -- a config file
- * able to rewrite either would be an arrangement quietly overruling a module's
- * security, and the layout is applied AFTER the permission filter precisely so
- * it cannot.
+ * alter an `endpoint` or a `requiredRole`. That is deliberate -- an arrangement
+ * able to rewrite either would quietly overrule a module's security, and the
+ * layout is applied AFTER the permission filter precisely so it cannot.
  *
  * ## Saving is PARTIAL, because the catalogue is
  *
- * The registry hides widgets whose `requiredRole` the viewer lacks, so an admin
- * saving from the editor is describing the dashboard THEY can see. A plain
- * replace would then delete a colleague's arrangement of the widgets they
- * cannot -- invisibly, since neither of them can see the other's cards.
- *
- * So placements for widgets outside this viewer's catalogue are KEPT, after the
- * submitted ones and in their existing relative order. It costs ten lines here
- * and is painful to retrofit once someone's arrangement is already gone.
+ * The registry hides widgets whose `requiredRole` the viewer lacks today. A
+ * placement the person made while they held that role is KEPT, after the
+ * submitted ones and in its existing relative order, so the card comes back
+ * where they put it when the role does.
  */
 final readonly class DashboardLayoutWriter
 {
     public function __construct(
         private DashboardWidgetRegistry $widgets,
         private DashboardLayoutProvider $layouts,
-        private ConfigWriterInterface $config,
+        private PersonalDashboardLayoutsInterface $personal,
     ) {
     }
 
     /**
-     * @param list<DashboardPlacement> $placements in the order they should appear
+     * @param list<DashboardPlacement> $placements      in the order they should appear
+     * @param string|null              $expectedVersion the version the arrangement was made from (If-Match)
      *
-     * @throws InvalidArgumentException when a placement names a widget this
-     *                                  viewer is not offered
+     * @throws InvalidArgumentException               when a placement names a widget this viewer is not
+     *                                                offered, or the dashboard id is not a plain token
+     * @throws StaleDashboardLayoutsException         when the person's arrangements changed since that version
+     * @throws DashboardArrangingUnavailableException when the installation keeps no personal arrangements
      *
-     * @return string where the layout landed -- a path, or `db://...`
+     * @return string the version written
      */
-    public function save(array $placements, ?string $section = null): string
+    public function save(array $placements, ?string $section = null, ?string $expectedVersion = null): string
     {
-        $dashboard = $section ?? DashboardLayoutProvider::MAIN;
+        $dashboard = $this->dashboard($section);
+
+        // Before the widget checks: on an installation that cannot keep an
+        // arrangement, "you cannot arrange here" is the true answer whatever
+        // the body says.
+        if (!$this->personal->canArrange()) {
+            throw new DashboardArrangingUnavailableException();
+        }
 
         // Only the widgets THIS dashboard shows. Saving the Content section
         // must not be able to place a card that belongs to the main dashboard --
@@ -86,7 +99,7 @@ final readonly class DashboardLayoutWriter
         }
 
         $kept = [];
-        foreach ($this->layouts->load($dashboard)->placements as $existing) {
+        foreach ($this->layouts->personal($dashboard)->placements ?? [] as $existing) {
             // Only what this viewer could not have been shown, and did not
             // resubmit -- anything they CAN see, they have just spoken for.
             if (!array_key_exists($existing->widget, $offered) && !array_key_exists($existing->widget, $submitted)) {
@@ -94,20 +107,31 @@ final readonly class DashboardLayoutWriter
             }
         }
 
-        return $this->config->write(
-            DashboardLayoutProvider::CONFIG_TYPE,
-            $dashboard,
-            ['widgets' => $this->toArray([...$placements, ...$kept])],
-        );
+        return $this->personal->save($dashboard, $this->toArray([...$placements, ...$kept]), $expectedVersion);
     }
 
-    /** Drop the saved arrangement so the catalogue's own order applies again. */
-    public function reset(?string $section = null): bool
+    /**
+     * Drop the person's arrangement so the module default applies again.
+     *
+     * @throws InvalidArgumentException               when the dashboard id is not a plain token
+     * @throws StaleDashboardLayoutsException         when the person's arrangements changed since that version
+     * @throws DashboardArrangingUnavailableException when the installation keeps no personal arrangements
+     *
+     * @return string the version written
+     */
+    public function reset(?string $section = null, ?string $expectedVersion = null): string
     {
-        return $this->config->delete(
-            DashboardLayoutProvider::CONFIG_TYPE,
-            $section ?? DashboardLayoutProvider::MAIN,
-        );
+        return $this->personal->clear($this->dashboard($section), $expectedVersion);
+    }
+
+    private function dashboard(?string $section): string
+    {
+        $dashboard = $section ?? DashboardLayoutProvider::MAIN;
+        if (1 !== preg_match(PersonalDashboardLayoutsInterface::DASHBOARD_ID_PATTERN, $dashboard)) {
+            throw new InvalidArgumentException(sprintf('"%s" is not a dashboard.', $dashboard));
+        }
+
+        return $dashboard;
     }
 
     /**

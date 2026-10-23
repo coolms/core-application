@@ -3,8 +3,8 @@
 All notable changes to `coolms/core-application` are recorded here.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
-Versioning is described in `CONTRIBUTING.md` -- read it before assuming what a
-major number means here.
+Versioning is described in the [CoolMS contributing guide](https://github.com/coolms/.github/blob/develop/CONTRIBUTING.md)
+-- read it before assuming what a major number means here.
 
 !! Entries dated before 2026-09-01 were **reconstructed** from tags and commit
 history when this file was created. Every entry after that is written in the
@@ -19,6 +19,46 @@ same commit as the change it describes.
   implements `coolms/core`'s `RetentionPopulationInterface`, and null -- unknown,
   never zero -- when it does not. Requires the `coolms/core` that ships the
   interface.
+
+## 2.0.0-alpha4 - 2026-10-22
+
+### Added
+- `Dashboard\PersonalDashboardLayoutsInterface`: where each person's own
+  dashboard arrangements are kept, answered by the host, with one version for
+  all of a person's dashboards (`version()` is read before `entries()`), and
+  `StaleDashboardLayoutsException` / `DashboardArrangingUnavailableException`
+  for a save from an older version and for a host that keeps none.
+- `Dashboard\NoPersonalDashboardLayouts`: the answer for a host without a
+  per-person store -- every dashboard is the module default and a save is
+  refused.
+- `DashboardCatalogue::versionForCurrentUser()` and `canArrange()`.
+
+### Changed
+- `DashboardLayoutWriter` saves the signed-in person's arrangement through the
+  port, against an optional expected version, and returns the version written;
+  it no longer takes a `ConfigWriterInterface` and never writes config.
+  `reset()` drops the person's arrangement the same way. A dashboard id must be
+  a plain token (`PersonalDashboardLayoutsInterface::DASHBOARD_ID_PATTERN`).
+- `DashboardLayoutProvider` draws the person's own arrangement when they have
+  one, else the module default read from config (`moduleDefault()`), never a
+  merge of the two; a bad stored entry is dropped and logged like a bad YAML
+  line. Its constructor takes the port.
+- `DashboardCatalogue`'s constructor takes the port.
+
+### Fixed
+- `DashboardWidgetRegistry` forgets its catalogue between requests: it
+  implements Symfony's `ResetInterface`, so `kernel.reset` clears it. The
+  catalogue is filtered by the viewer's roles, and a cache kept for the
+  registry's lifetime handed the first viewer's list to the next wherever a
+  kernel serves more than one request (a long-running worker, a test client
+  that keeps its kernel). Each widget's own endpoint kept refusing data the
+  viewer may not read, so the catalogue was what leaked, never the data.
+  Requires `symfony/service-contracts` ^3.5, now declared. An application
+  that registers the service with autoconfiguration on gets the
+  `kernel.reset` tag by itself; one that defines it by hand with
+  autoconfiguration off adds the tag (`kernel.reset`, method `reset`).
+
+## 2.0.0-alpha3 - 2026-10-07
 
 ### Removed
 - The backup ENGINE: `Backup\BackupRunner`, `Backup\BackupWriter`,
