@@ -10,6 +10,21 @@ Versioning is described in the [CoolMS contributing guide](https://github.com/co
 history when this file was created. Every entry after that is written in the
 same commit as the change it describes.
 
+## Unreleased
+
+### Added
+- `ApiManifest::$modules`: a module's own manifest block, by module name. A
+  contributor returns it as `['modules.<module>', $block]`, so a module can give
+  the clients addresses that Core has no typed section for without a Core
+  release.
+
+### Changed
+- `ApiManifestBuilder::build()` refuses, with a `LogicException` naming the
+  contributor and the key, a key that is neither one of `CORE_KEYS` nor
+  `modules.<module>`, a key two contributors give, and a `modules.` key that
+  names no module. Such a contribution used to be dropped or overwritten
+  silently.
+
 ## 2.0.0-alpha4 - 2026-10-22
 
 ### Added

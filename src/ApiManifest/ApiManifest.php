@@ -43,6 +43,14 @@ final readonly class ApiManifest
          * core-bundle's `Ui\UiApiManifest`.
          */
         public ?object $ui = null,
+        /**
+         * A module's own manifest block, by module name: what a contributor returns under `modules.<module>` -- the
+         * place for a module's addresses that Core has no typed section for, so the clients read them from the
+         * manifest without a Core release.
+         *
+         * @var array<string, mixed>
+         */
+        public array $modules = [],
     ) {
     }
 }
