@@ -10,6 +10,11 @@ Versioning is described in the [CoolMS contributing guide](https://github.com/co
 history when this file was created. Every entry after that is written in the
 same commit as the change it describes.
 
+## Unreleased
+
+### Changed
+- `FileConfigLoader` indexes each root's files by type and id once, instead of parsing every YAML file below the root on every call until one matches. A caller reading many ids, most with no file, paid a full parse of the root each time: the settings list (28 reads) went from 3.2-4.6 s to 80-230 ms. The index is kept while the root's files are the same (paths, times and sizes, and the content of any file written in the last second), so a file added, removed or edited, in the same process too, is seen by the next call. A hit is read from its file afresh. Answers are unchanged: every type and id in an installation's `config/` loads and locates the same as before.
+
 ## 2.0.0-alpha5 - 2026-11-03
 
 ### Added
